@@ -9,7 +9,9 @@ from app.datasets import load_pack
 from app.evaluation_store import enqueue, work, report
 
 p = argparse.ArgumentParser()
-p.add_argument("--suite", choices=["development", "holdout", "movement"], default="holdout")
+p.add_argument(
+    "--suite", choices=["development", "holdout", "movement"], default="holdout"
+)
 p.add_argument("--run")
 args = p.parse_args()
 store = Store()
@@ -18,7 +20,12 @@ run = args.run or "eval-" + str(uuid.uuid4())[:8]
 if not args.run:
     with store.connect() as c:
         store.create_run(
-            c, run, "Step 5 · evaluation review", load_pack("baseline-shift")["state"]
+            c,
+            run,
+            "Evaluation · " + args.suite,
+            load_pack(
+                "movement-shift" if args.suite == "movement" else "baseline-shift"
+            )["state"],
         )
 eid = enqueue(store, run, store.read(run)["revision"], args.suite)
 print(json.dumps(dict(run=run, evaluation=eid)), flush=True)

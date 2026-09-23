@@ -21,9 +21,28 @@ Existing tests cover approval revision checks, idempotency, rollback/retry, book
 
 The connected movement suite contains eight synthetic families: reference, retrieval obstruction, full destination, calendar constraints, distant tractors, route closure, receiver failure and impossible cutoff. Each compares baseline, deadline and bounded constraint strategies.
 
-Movement duration is deterministic. One seed per family yields 24 attempts; repeated seeds would not be independent physical uncertainty evidence. Earlier repeated-seed work was cancelled and retained as partial development evidence. The final result report is published alongside this document after completion.
+Movement duration is deterministic. One seed per family yields 24 attempts; repeated seeds would not be independent physical uncertainty evidence. Earlier repeated-seed work was cancelled and retained as partial development evidence. The final run completed all eight cases and all 24 attempts. [Machine-readable results and source fingerprints](validation-results.json).
 
 Compare strategies within the same model. Do not compare legacy and staged execution as if changing physical assumptions improved the optimizer. Cases inspected during development are internal regression/validation evidence, not permanently untouched holdouts.
+
+### Observed outcomes
+
+Values below are total terminal cargo on time, not only North Rail.
+
+| Scenario | Baseline | Deadline | Constraint |
+|---|---:|---:|---:|
+| Reference | 16 | 17 | 17 |
+| Retrieval obstruction | 15 | 17 | 17 |
+| Full destination | 15 | 17 | 17 |
+| Handling calendar | 14 | 13 | 13 |
+| Distant tractors | 15 | 16 | 16 |
+| Route disruption | 1 | 1 | 1 |
+| Receiver disruption | 1 | 1 | 1 |
+| Impossible North Rail cutoff | 14 | 14 | 14 |
+
+Each alternative had four wins, three ties and one loss against baseline. Both disruption families interrupted all strategies; subsequent repair did not silently restart the old plan. The impossible cutoff does not prevent unrelated services completing. No candidate was rejected by physical replay in this suite after correcting the dispatch-availability constraint.
+
+The calendar loss remains a real limitation of the available policy/option pool, not a reason to remove the case. The interface compares baseline alongside alternatives so retaining assignments remains an available decision. CP-SAT searches a bounded pool and does not guarantee it beats the baseline or heuristic.
 
 ## Metrics
 

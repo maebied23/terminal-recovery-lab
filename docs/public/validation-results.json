@@ -1,0 +1,932 @@
+{
+  "scope": "Internal synthetic deterministic stage execution; not real-terminal calibration",
+  "implementation_commit": "38aca1a",
+  "planner_digest": "4697a5db9a268cf83f1312e914fd5094597803e29041c7c782bc340795d44f79",
+  "schema_version": 11,
+  "runtime": {
+    "python": "3.13.5",
+    "machine": "x86_64",
+    "ortools": "9.15.6755"
+  },
+  "sampling_note": "One execution per family/strategy: stage durations are deterministic; repeated seeds would not be independent evidence.",
+  "source_hashes": {
+    "app/api.py": "e605ec1c7704e45dfa8fe7f4c52d2c134761efcb5f83722f31cb13c97d63b3db",
+    "app/feed.py": "441a554f09bd8871c27057a2336dec23dc46de85c0c1019aa42ecfbfd83cafca",
+    "app/store.py": "3298a286c739c73b24ac749f95ed8cae5494699f5ff6fce69c3662aca7f362bd",
+    "app/tools.py": "aada63ff080f9becd259205a51262c281ffd1e0ac74dad61d3ce4fbbc3903165",
+    "app/domain.py": "29dc581379c77bd9f932deb30569f87f3c2f7fe5687494fb6ada18fa6a760183",
+    "app/inputs.py": "618bc1869a043dc3c508f89fe9217737f967da247b5377b3f71a0e1718ac785a",
+    "app/runtime.py": "d60ca8add24174d5bfaaece8a65a73cd9e8af0ce84ec6da738b41fffc47ff3b8",
+    "app/__init__.py": "bbc750765c4a33efbe93de3cf7cb68668ec821ce1eec86835768cece6bcf78d3",
+    "app/datasets.py": "f4a8f30472917fab023004a667624802e479e1b625169fb915fe2a09adb9302f",
+    "app/movement.py": "fd195569a51ffafdf49a90d0c58d9af3690185e393459fe504a061012051060f",
+    "app/planning.py": "e7357de135ebac92236c9aee2e0f12c88f921b3d879043ca428353658328a4b7",
+    "app/assistant.py": "b33eea68b0eef004b28ff9c8cadae28c83645aa189a9763dfc46800840258f52",
+    "app/diagnosis.py": "58152706af0968b1ff76345a263909325e6172647d94803b0dc80b0d6e541f45",
+    "app/placement.py": "7af33c96a4d12f9acd55b9e13c68b9e1579d39b6770c82580b28272135fa96f8",
+    "app/rehandles.py": "a36fcbb472079f86d5db438e4237961a3e04d0070cb538b90e9e106f7fce0c8c",
+    "app/evaluation.py": "dfa657040aac91e525b2f7992de20e8b8b7b224ab774a085cfab059314d9c882",
+    "app/scheduling.py": "f9f162394c47536e13b7248d0c3193f98a9dac34e584013838f5740fed988f2f",
+    "app/integration.py": "4755266d4f675d512354c907aeb204bf40aeaa8b220f884180cc8f24602183ba",
+    "app/data_evidence.py": "33b4b9e620aad218b772c3e3072f972f33aeb194d2cdd3259180746d61d9be8f",
+    "app/relationships.py": "9178b6b510880db218ca768a6fbc17dcc074187a54abb11e9830b89e93e6f5da",
+    "sql/input_impact.sql": "1437dfc24859ab857a1975a124b8f5b3c179e10ba852663ad4f2e86c4e03c57b",
+    "app/move_execution.py": "6b010a8b77af27ed42b4872cd21d0b8aac68cc1b2a3b2d87f74d214e236069f9",
+    "app/movement_store.py": "5836f48f9ef0dd2d3849693818975aab655cddfb6515eaa7a4ee1982ea6931cf",
+    "app/schedule_store.py": "d9a59f9f33f450850c9434ffee7055ccc8c68f1a6d91b8afc46476895426a5a7",
+    "app/stage_planning.py": "0e75e181b565b2168d164e1b56a822df6d477c3e6836acc7b070d14114970dba",
+    "migrations/001_v1.sql": "7ed2f5c5f3db63c0fc73324890cfcf1ce851c97ef715e3140b65dd8eb4caea77",
+    "requirements.lock.txt": "4c06b1d4440d5d97770c18c153b8221c3152372ed5d6885e200548610c5c11a1",
+    "app/placement_store.py": "28bab17873c22d39c8caebe4cbcf21fa69a4ad42c2b91e923bb58cf2a47fd515",
+    "app/stage_execution.py": "e83e3e28865923c9972e4148b7b3ead2808f42527c8591479ceb0a511cbf2507",
+    "app/evaluation_store.py": "e135eb1e16b893eb9bb32a54cce8ba99d6b0762d6302cea10340217d1fe4072a",
+    "app/schedule_execution.py": "28f466c454e76816b760e519a3871ae1c1a7a932b91d9a596a7a1b6db327a9a0",
+    "evaluation/scenarios.json": "ea30d762f5d588d9e6a0a452f1cc8c3c77f54d27a8f1134e502b3ef541d3f0e1",
+    "sql/diagnosis_summary.sql": "69a97a4fe1594b75e773927a92045bb757caf67714996a39d55757359596e3bf",
+    "sql/schedule_exposure.sql": "2398b82d431c3f10076a35ef5c3c8c99237a1d92cf863d5ff9e2a5f26d615f52",
+    "sql/schedule_feedback.sql": "45990d7d81e552043b8830a77768f2a7423501535d15ba602e55c87298aacc43",
+    "sql/diagnosis_calendar.sql": "9726aab8970851e5eb710e6e5d578599500bffc0a96d7732b248be608281b160",
+    "sql/evaluation_summary.sql": "810f322a8e3c9062cb5e2ac3e5ea06f33668d2a263a83da5ef0b1ebfdd60f989",
+    "sql/integration_status.sql": "0f45f1f4de77a56d6f68ef166ce6760c7e6b62ab77ebfa38125469c2edfca352",
+    "sql/placement_temporal.sql": "c7146fe40b52679e32e959e5e35ed98a8a8cb065a8173e8abc331881e79f08bb",
+    "migrations/003_datasets.sql": "43a9f14804844df3aa6f77f760f93e2ee835185ebfa6d20c47e0dff913508e1a",
+    "migrations/008_movement.sql": "d04e5038db37143500a959f226723dae0f66956aed205d139489571352cd8255",
+    "migrations/011_delivery.sql": "110ce0afa22ebb489111d12e568517a2c5521ae5dc992ff5cdc34bda1e11554d",
+    "migrations/005_schedules.sql": "9f0bf4f4aa9602c9e41f7690aee4e332a7af82e95ca402ec30ba52afc72ce02a",
+    "sql/placement_candidates.sql": "df5e2480b1984b8ca52198bbc61063625dd58355edd7bf315df3827b29fedc97",
+    "migrations/007_placements.sql": "67a69daff64c4234cde664e401bc71a9f08ca88b5af22d1601802b0311d20708",
+    "sql/diagnosis_dependencies.sql": "67bbd55a2e72ce8e04e30fd9218dc17c414b89bb93ee7bb652c19db55829a243",
+    "evaluation/assistant-cases.json": "0c63a84d79f8654d904d8ba7cfcc4d98314890f67c65dd56d3f39e1816b01a10",
+    "migrations/002_relationships.sql": "a54c9215ed2d41101ce121cfcd5fb2398c9f2ab43e5ed40b869dee088c1d6f95",
+    "migrations/009_custody_commit.sql": "90a7d95122d2feca2a9b8bf45db66bed4968052f487496993740577ef63d962b",
+    "migrations/010_movement_rules.sql": "d9cce2fcbe12ca91bb9a22fa137e60410c83c00488f4ebd461fadc8701262e6e",
+    "sql/evaluation_service_impact.sql": "fe19102662da5acc7930a2a4e270f96eea3fcf084ac3d94fe3c9e8ef88528c13",
+    "datasets/baseline-shift/visits.csv": "86734b737aefeafd44a3ce919a7ec06f347d5d4a05d4c758d7c71ccc1d2fb538",
+    "datasets/normal-shift/changes.json": "d4591b7dc32ebcf269c0ad4dae97d18a863987ec48f872773c6c60b1b77be3f9",
+    "datasets/normal-shift/events.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "migrations/004_diagnosis_rules.sql": "dfd1c09d177c561d9d4cad38d638efcf0387081b185ed5cad7df814fdb9c621f",
+    "datasets/normal-shift/manifest.json": "1b0f6818efd22f9fb794a973c1c9c4d0f11c278d081f47914869024bb2f85ef2",
+    "datasets/baseline-shift/changes.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "datasets/baseline-shift/events.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/movement-shift/changes.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "datasets/movement-shift/events.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "datasets/baseline-shift/equipment.csv": "0045882c979752b48c34c9125499abc97fa2da5e8a3f57d09c992e4b773cf5d1",
+    "datasets/baseline-shift/inventory.csv": "385fd6478a9efd9957472cb278957152ade2f5aa75e500792d1c6e8e62dce9a0",
+    "datasets/baseline-shift/locations.csv": "cb77a5b103ecfc34bd56fbe16293328114ec8bbf4b2a0942cc23e5cfd4a008a4",
+    "datasets/baseline-shift/manifest.json": "9d568de17a63929bffa3703f2d12c9fcd036d61ef658544add774b0901256fdd",
+    "datasets/movement-shift/manifest.json": "c4e5875729b86ae983cce9b34a1e3a95b575eef3bb57d430ab710f0d8982d335",
+    "datasets/movement-shift/movement.json": "cf767d09933758173ca696c37fca20a06e8843e1bbe2e720fbf8f8b739c0d4ee",
+    "datasets/baseline-shift/containers.csv": "07466064b7ba78d489e553a797e51f2845d579adbb363f235db38706e8606a09",
+    "datasets/baseline-shift/identities.csv": "41ef3f128c62134e88cdb502e8d85bbc4b78be0bc6019f16ee700d87b506f521",
+    "datasets/equipment-outage/changes.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "datasets/equipment-outage/events.jsonl": "b0b2cadaf9ba237c9c3550daca8c76257b8d4c9af40aa1558c9c9cedafe9fdce",
+    "datasets/baseline-shift/commitments.csv": "48c29745827fe72dd4830264dfcc4b79c9a6f0f2fa0281cdf79f78114437ae77",
+    "datasets/baseline-shift/work_orders.csv": "8012d8d4f38189220be687a657f228d3ee6fa7d90d1cc05b70dfce9c348d225a",
+    "datasets/equipment-outage/manifest.json": "0662aa8afaeedbcf5e225a130f1d80a38c8bfb0cc713af72cbc2667c244295ab",
+    "datasets/impossible-cutoff/changes.json": "c4ed6f60a4b58b706476f322e72f8d70c04bed48c99a8623b95eaffcbea07bef",
+    "datasets/impossible-cutoff/events.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "migrations/006_evaluation_assistant.sql": "a27a52b0b9aa70882f1f738884ff8e77b191d5891ec594af9c2d8f34a1e30a67",
+    "datasets/baseline-shift/dependencies.csv": "bbdba287b270c719c40ac2a7f466bc0908a8ca0c461c91fd575fe9b6a2532db6",
+    "datasets/impossible-cutoff/manifest.json": "4585bf7b38247fef8ae0f7af8178acb059da99f0e968c8988e9a0af91eadd3b0",
+    "datasets/imperfect-information/changes.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "datasets/imperfect-information/events.jsonl": "17dfca04e66cef9fddc526cf8cd0c8d147b21501b2114cd275f73288ceda680e",
+    "datasets/imperfect-information/manifest.json": "6371b6829fdff91237a01c367efde604f7c1134ac2cae7b515ea2fa3c20d244d",
+    "datasets/baseline-shift/equipment_availability.csv": "11ecd2c6cc55bfdd81b089639fc5f28bc1110d9e309e087082fc068b3dd465b2"
+  },
+  "cases": [
+    {
+      "id": "movement-reference",
+      "scenario": {
+        "id": "movement-reference",
+        "pack": "movement-shift",
+        "known": {},
+        "title": "Connected movement reference",
+        "events": [],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 8,
+            "travel": 260,
+            "changes": 0,
+            "on_time": 16,
+            "lateness": 747,
+            "rehandles": 1,
+            "completed_moves": 31,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 110,
+            "loaded_travel_minutes": 150,
+            "resource_wait_task_minutes": 1139
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 7,
+            "travel": 271,
+            "changes": 4,
+            "on_time": 17,
+            "lateness": 499,
+            "rehandles": 1,
+            "completed_moves": 33,
+            "missed_services": 3,
+            "prediction_error": 0,
+            "completed_services": 2,
+            "empty_travel_minutes": 109,
+            "loaded_travel_minutes": 162,
+            "resource_wait_task_minutes": 1134
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 7,
+            "travel": 271,
+            "changes": 4,
+            "on_time": 17,
+            "lateness": 499,
+            "rehandles": 1,
+            "completed_moves": 33,
+            "missed_services": 3,
+            "prediction_error": 0,
+            "completed_services": 2,
+            "empty_travel_minutes": 109,
+            "loaded_travel_minutes": 162,
+            "resource_wait_task_minutes": 1134
+          }
+        }
+      ]
+    },
+    {
+      "id": "retrieval-obstruction",
+      "scenario": {
+        "id": "retrieval-obstruction",
+        "pack": "movement-shift",
+        "known": {
+          "relocation_target": "A3"
+        },
+        "title": "Relocation targets cargo with an existing retrieval obligation",
+        "events": [],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 9,
+            "travel": 249,
+            "changes": 0,
+            "on_time": 15,
+            "lateness": 850,
+            "rehandles": 1,
+            "completed_moves": 30,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 106,
+            "loaded_travel_minutes": 143,
+            "resource_wait_task_minutes": 1092
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 7,
+            "travel": 266,
+            "changes": 4,
+            "on_time": 17,
+            "lateness": 493,
+            "rehandles": 1,
+            "completed_moves": 33,
+            "missed_services": 3,
+            "prediction_error": 0,
+            "completed_services": 2,
+            "empty_travel_minutes": 106,
+            "loaded_travel_minutes": 160,
+            "resource_wait_task_minutes": 1143
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 7,
+            "travel": 266,
+            "changes": 4,
+            "on_time": 17,
+            "lateness": 493,
+            "rehandles": 1,
+            "completed_moves": 33,
+            "missed_services": 3,
+            "prediction_error": 0,
+            "completed_services": 2,
+            "empty_travel_minutes": 106,
+            "loaded_travel_minutes": 160,
+            "resource_wait_task_minutes": 1143
+          }
+        }
+      ]
+    },
+    {
+      "id": "full-destination",
+      "scenario": {
+        "id": "full-destination",
+        "pack": "movement-shift",
+        "known": {
+          "full_location": "D4"
+        },
+        "title": "Prescribed destination has no initial free capacity",
+        "events": [],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 9,
+            "travel": 225,
+            "changes": 0,
+            "on_time": 15,
+            "lateness": 847,
+            "rehandles": 0,
+            "completed_moves": 28,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 87,
+            "loaded_travel_minutes": 138,
+            "resource_wait_task_minutes": 898
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 7,
+            "travel": 242,
+            "changes": 4,
+            "on_time": 17,
+            "lateness": 636,
+            "rehandles": 0,
+            "completed_moves": 30,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 94,
+            "loaded_travel_minutes": 148,
+            "resource_wait_task_minutes": 940
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 7,
+            "travel": 242,
+            "changes": 4,
+            "on_time": 17,
+            "lateness": 636,
+            "rehandles": 0,
+            "completed_moves": 30,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 94,
+            "loaded_travel_minutes": 148,
+            "resource_wait_task_minutes": 940
+          }
+        }
+      ]
+    },
+    {
+      "id": "handling-calendar",
+      "scenario": {
+        "id": "handling-calendar",
+        "pack": "movement-shift",
+        "known": {
+          "split_calendars": [
+            "YC-1",
+            "TT-2"
+          ]
+        },
+        "title": "Handling and tractor calendar gaps",
+        "events": [],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 10,
+            "travel": 239,
+            "changes": 0,
+            "on_time": 14,
+            "lateness": 848,
+            "rehandles": 1,
+            "completed_moves": 30,
+            "missed_services": 3,
+            "prediction_error": 0,
+            "completed_services": 2,
+            "empty_travel_minutes": 95,
+            "loaded_travel_minutes": 144,
+            "resource_wait_task_minutes": 1181
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 11,
+            "travel": 262,
+            "changes": 5,
+            "on_time": 13,
+            "lateness": 722,
+            "rehandles": 1,
+            "completed_moves": 31,
+            "missed_services": 4,
+            "prediction_error": 0,
+            "completed_services": 1,
+            "empty_travel_minutes": 108,
+            "loaded_travel_minutes": 154,
+            "resource_wait_task_minutes": 1224
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 11,
+            "travel": 262,
+            "changes": 5,
+            "on_time": 13,
+            "lateness": 722,
+            "rehandles": 1,
+            "completed_moves": 31,
+            "missed_services": 4,
+            "prediction_error": 0,
+            "completed_services": 1,
+            "empty_travel_minutes": 108,
+            "loaded_travel_minutes": 154,
+            "resource_wait_task_minutes": 1224
+          }
+        }
+      ]
+    },
+    {
+      "id": "empty-reposition",
+      "scenario": {
+        "id": "empty-reposition",
+        "pack": "movement-shift",
+        "known": {
+          "tractor_origin": {
+            "TT-1": "VESSEL-2",
+            "TT-2": "TRUCK-OUT"
+          }
+        },
+        "title": "Tractors begin at distant service nodes",
+        "events": [],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 9,
+            "travel": 262,
+            "changes": 0,
+            "on_time": 15,
+            "lateness": 724,
+            "rehandles": 1,
+            "completed_moves": 31,
+            "missed_services": 3,
+            "prediction_error": 0,
+            "completed_services": 2,
+            "empty_travel_minutes": 109,
+            "loaded_travel_minutes": 153,
+            "resource_wait_task_minutes": 1188
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 8,
+            "travel": 243,
+            "changes": 4,
+            "on_time": 16,
+            "lateness": 818,
+            "rehandles": 1,
+            "completed_moves": 30,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 96,
+            "loaded_travel_minutes": 147,
+            "resource_wait_task_minutes": 1053
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 8,
+            "travel": 261,
+            "changes": 4,
+            "on_time": 16,
+            "lateness": 716,
+            "rehandles": 1,
+            "completed_moves": 31,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 109,
+            "loaded_travel_minutes": 152,
+            "resource_wait_task_minutes": 1191
+          }
+        }
+      ]
+    },
+    {
+      "id": "route-disruption",
+      "scenario": {
+        "id": "route-disruption",
+        "pack": "movement-shift",
+        "known": {},
+        "title": "Access route closes after approval",
+        "events": [
+          {
+            "kind": "route.closed",
+            "value": true,
+            "entity_id": "A1>J0",
+            "delivery_minute": 3,
+            "observed_minute": 3
+          }
+        ],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "interrupted",
+          "metrics": {
+            "missed": 23,
+            "travel": 19,
+            "changes": 0,
+            "on_time": 1,
+            "lateness": 2154,
+            "rehandles": 0,
+            "completed_moves": 2,
+            "missed_services": 5,
+            "prediction_error": 15,
+            "completed_services": 0,
+            "empty_travel_minutes": 11,
+            "loaded_travel_minutes": 9,
+            "resource_wait_task_minutes": 171
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "interrupted",
+          "metrics": {
+            "missed": 23,
+            "travel": 19,
+            "changes": 4,
+            "on_time": 1,
+            "lateness": 2154,
+            "rehandles": 0,
+            "completed_moves": 2,
+            "missed_services": 5,
+            "prediction_error": 16,
+            "completed_services": 0,
+            "empty_travel_minutes": 11,
+            "loaded_travel_minutes": 9,
+            "resource_wait_task_minutes": 171
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "interrupted",
+          "metrics": {
+            "missed": 23,
+            "travel": 19,
+            "changes": 4,
+            "on_time": 1,
+            "lateness": 2154,
+            "rehandles": 0,
+            "completed_moves": 2,
+            "missed_services": 5,
+            "prediction_error": 16,
+            "completed_services": 0,
+            "empty_travel_minutes": 11,
+            "loaded_travel_minutes": 9,
+            "resource_wait_task_minutes": 171
+          }
+        }
+      ]
+    },
+    {
+      "id": "receiver-disruption",
+      "scenario": {
+        "id": "receiver-disruption",
+        "pack": "movement-shift",
+        "known": {},
+        "title": "Receiver fails while work is in flight",
+        "events": [
+          {
+            "kind": "equipment.status",
+            "value": "failed",
+            "entity_id": "YC-1",
+            "delivery_minute": 8,
+            "observed_minute": 8
+          },
+          {
+            "kind": "equipment.status",
+            "value": "available",
+            "entity_id": "YC-1",
+            "delivery_minute": 24,
+            "observed_minute": 24
+          }
+        ],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "interrupted",
+          "metrics": {
+            "missed": 23,
+            "travel": 23,
+            "changes": 0,
+            "on_time": 1,
+            "lateness": 2154,
+            "rehandles": 1,
+            "completed_moves": 3,
+            "missed_services": 5,
+            "prediction_error": 15,
+            "completed_services": 0,
+            "empty_travel_minutes": 11,
+            "loaded_travel_minutes": 12,
+            "resource_wait_task_minutes": 253
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "interrupted",
+          "metrics": {
+            "missed": 23,
+            "travel": 23,
+            "changes": 4,
+            "on_time": 1,
+            "lateness": 2154,
+            "rehandles": 1,
+            "completed_moves": 3,
+            "missed_services": 5,
+            "prediction_error": 16,
+            "completed_services": 0,
+            "empty_travel_minutes": 11,
+            "loaded_travel_minutes": 12,
+            "resource_wait_task_minutes": 253
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "interrupted",
+          "metrics": {
+            "missed": 23,
+            "travel": 23,
+            "changes": 4,
+            "on_time": 1,
+            "lateness": 2154,
+            "rehandles": 1,
+            "completed_moves": 3,
+            "missed_services": 5,
+            "prediction_error": 16,
+            "completed_services": 0,
+            "empty_travel_minutes": 11,
+            "loaded_travel_minutes": 12,
+            "resource_wait_task_minutes": 253
+          }
+        }
+      ]
+    },
+    {
+      "id": "impossible-movement",
+      "scenario": {
+        "id": "impossible-movement",
+        "pack": "movement-shift",
+        "known": {
+          "rail_cutoff": 1
+        },
+        "title": "North Rail has an infeasible cutoff",
+        "events": [],
+        "duration_factor": 1
+      },
+      "outcomes": [
+        {
+          "strategy": "baseline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 10,
+            "travel": 214,
+            "changes": 0,
+            "on_time": 14,
+            "lateness": 1331,
+            "rehandles": 1,
+            "completed_moves": 27,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 86,
+            "loaded_travel_minutes": 128,
+            "resource_wait_task_minutes": 839
+          }
+        },
+        {
+          "strategy": "constraint",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 10,
+            "travel": 228,
+            "changes": 5,
+            "on_time": 14,
+            "lateness": 1233,
+            "rehandles": 1,
+            "completed_moves": 28,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 95,
+            "loaded_travel_minutes": 133,
+            "resource_wait_task_minutes": 811
+          }
+        },
+        {
+          "strategy": "deadline",
+          "validation": "passed",
+          "execution_status": "completed",
+          "metrics": {
+            "missed": 10,
+            "travel": 226,
+            "changes": 3,
+            "on_time": 14,
+            "lateness": 1231,
+            "rehandles": 1,
+            "completed_moves": 28,
+            "missed_services": 2,
+            "prediction_error": 0,
+            "completed_services": 3,
+            "empty_travel_minutes": 93,
+            "loaded_travel_minutes": 133,
+            "resource_wait_task_minutes": 859
+          }
+        }
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "strategy": "baseline",
+      "attempted": 8,
+      "executed": 8,
+      "paired": 8,
+      "wins": 0,
+      "ties": 8,
+      "losses": 0,
+      "not_executable": 0,
+      "interrupted": 2,
+      "mean_on_time": "11.38",
+      "mean_delta": "0.00",
+      "p10_on_time": 1.0,
+      "p90_on_time": 15.3,
+      "mean_lateness": "1206.88",
+      "mean_prediction_error": "3.75",
+      "mean_resource_wait": "845.13",
+      "mean_changed_bookings": "0.00"
+    },
+    {
+      "strategy": "constraint",
+      "attempted": 8,
+      "executed": 8,
+      "paired": 8,
+      "wins": 4,
+      "ties": 3,
+      "losses": 1,
+      "not_executable": 0,
+      "interrupted": 2,
+      "mean_on_time": "12.00",
+      "mean_delta": "0.63",
+      "p10_on_time": 1.0,
+      "p90_on_time": 17.0,
+      "mean_lateness": "1088.63",
+      "mean_prediction_error": "4.00",
+      "mean_resource_wait": "841.13",
+      "mean_changed_bookings": "28.63"
+    },
+    {
+      "strategy": "deadline",
+      "attempted": 8,
+      "executed": 8,
+      "paired": 8,
+      "wins": 4,
+      "ties": 3,
+      "losses": 1,
+      "not_executable": 0,
+      "interrupted": 2,
+      "mean_on_time": "12.00",
+      "mean_delta": "0.63",
+      "p10_on_time": 1.0,
+      "p90_on_time": 17.0,
+      "mean_lateness": "1075.63",
+      "mean_prediction_error": "4.00",
+      "mean_resource_wait": "864.38",
+      "mean_changed_bookings": "28.63"
+    }
+  ],
+  "service_impact": [
+    {
+      "strategy": "baseline",
+      "commitment_id": "AURORA",
+      "samples": 8,
+      "mean_on_time": "2.00",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 4,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "constraint",
+      "commitment_id": "AURORA",
+      "samples": 8,
+      "mean_on_time": "1.88",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 3,
+      "harmed_samples": 2,
+      "mean_delta": "-0.13"
+    },
+    {
+      "strategy": "deadline",
+      "commitment_id": "AURORA",
+      "samples": 8,
+      "mean_on_time": "1.88",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 3,
+      "harmed_samples": 2,
+      "mean_delta": "-0.13"
+    },
+    {
+      "strategy": "baseline",
+      "commitment_id": "EAST-RAIL",
+      "samples": 8,
+      "mean_on_time": "2.25",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 6,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "constraint",
+      "commitment_id": "EAST-RAIL",
+      "samples": 8,
+      "mean_on_time": "2.13",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 5,
+      "harmed_samples": 1,
+      "mean_delta": "-0.13"
+    },
+    {
+      "strategy": "deadline",
+      "commitment_id": "EAST-RAIL",
+      "samples": 8,
+      "mean_on_time": "2.13",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 5,
+      "harmed_samples": 1,
+      "mean_delta": "-0.13"
+    },
+    {
+      "strategy": "baseline",
+      "commitment_id": "MERIDIAN",
+      "samples": 8,
+      "mean_on_time": "2.25",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 6,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "constraint",
+      "commitment_id": "MERIDIAN",
+      "samples": 8,
+      "mean_on_time": "2.25",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 6,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "deadline",
+      "commitment_id": "MERIDIAN",
+      "samples": 8,
+      "mean_on_time": "2.25",
+      "cargo_per_case": "3.00",
+      "complete_manifests": 6,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "baseline",
+      "commitment_id": "NORTH-RAIL",
+      "samples": 8,
+      "mean_on_time": "1.63",
+      "cargo_per_case": "6.00",
+      "complete_manifests": 0,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "constraint",
+      "commitment_id": "NORTH-RAIL",
+      "samples": 8,
+      "mean_on_time": "2.00",
+      "cargo_per_case": "6.00",
+      "complete_manifests": 0,
+      "harmed_samples": 0,
+      "mean_delta": "0.38"
+    },
+    {
+      "strategy": "deadline",
+      "commitment_id": "NORTH-RAIL",
+      "samples": 8,
+      "mean_on_time": "2.00",
+      "cargo_per_case": "6.00",
+      "complete_manifests": 0,
+      "harmed_samples": 0,
+      "mean_delta": "0.38"
+    },
+    {
+      "strategy": "baseline",
+      "commitment_id": "ROAD-AM",
+      "samples": 8,
+      "mean_on_time": "3.25",
+      "cargo_per_case": "9.00",
+      "complete_manifests": 0,
+      "harmed_samples": 0,
+      "mean_delta": "0.00"
+    },
+    {
+      "strategy": "constraint",
+      "commitment_id": "ROAD-AM",
+      "samples": 8,
+      "mean_on_time": "3.75",
+      "cargo_per_case": "9.00",
+      "complete_manifests": 0,
+      "harmed_samples": 0,
+      "mean_delta": "0.50"
+    },
+    {
+      "strategy": "deadline",
+      "commitment_id": "ROAD-AM",
+      "samples": 8,
+      "mean_on_time": "3.75",
+      "cargo_per_case": "9.00",
+      "complete_manifests": 0,
+      "harmed_samples": 0,
+      "mean_delta": "0.50"
+    }
+  ]
+}
