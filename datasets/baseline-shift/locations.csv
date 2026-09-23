@@ -1,0 +1,31 @@
+id,kind,zone,capacity,block,x,y,label
+A1,yard,west,8,A,160,265,Block A · bay 1
+A2,yard,west,8,A,200,265,Block A · bay 2
+A3,yard,west,8,A,240,265,Block A · bay 3
+A4,yard,west,8,A,280,265,Block A · bay 4
+B1,yard,west,8,B,385,265,Block B · bay 1
+B2,yard,west,8,B,425,265,Block B · bay 2
+B3,yard,west,8,B,465,265,Block B · bay 3
+B4,yard,west,8,B,505,265,Block B · bay 4
+C1,yard,west,8,C,610,265,Block C · bay 1
+C2,yard,west,8,C,650,265,Block C · bay 2
+C3,yard,west,8,C,690,265,Block C · bay 3
+C4,yard,west,8,C,730,265,Block C · bay 4
+D1,yard,east,8,D,160,435,Block D · bay 1
+D2,yard,east,8,D,200,435,Block D · bay 2
+D3,yard,east,8,D,240,435,Block D · bay 3
+D4,yard,east,8,D,280,435,Block D · bay 4
+E1,yard,east,8,E,385,435,Block E · bay 1
+E2,yard,east,8,E,425,435,Block E · bay 2
+E3,yard,east,8,E,465,435,Block E · bay 3
+E4,yard,east,8,E,505,435,Block E · bay 4
+F1,yard,east,8,F,610,435,Block F · bay 1
+F2,yard,east,8,F,650,435,Block F · bay 2
+F3,yard,east,8,F,690,435,Block F · bay 3
+F4,yard,east,8,F,730,435,Block F · bay 4
+VESSEL-1,vessel,all,80,VESSEL-1,220,95,VESSEL-1
+VESSEL-2,vessel,all,80,VESSEL-2,740,95,VESSEL-2
+GATE-IN,gate,all,40,GATE-IN,100,590,GATE-IN
+TRUCK-OUT,truck,all,40,TRUCK-OUT,350,590,TRUCK-OUT
+RAIL-1,rail,all,12,RAIL-1,780,565,RAIL-1
+RAIL-2,rail,all,12,RAIL-2,780,625,RAIL-2

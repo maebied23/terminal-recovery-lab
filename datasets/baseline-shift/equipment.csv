@@ -1,0 +1,10 @@
+id,kind,zone,status,x,y
+YC-1,yard,west,available,250,345
+YC-2,yard,east,available,700,510
+YC-3,yard,all,available,500,345
+QC-1,quay,west,available,280,175
+QC-2,quay,east,available,780,175
+TT-1,tractor,all,available,160,200
+TT-2,tractor,all,available,440,200
+TT-3,tractor,all,available,700,200
+GATE-1,gate,all,available,100,555

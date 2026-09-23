@@ -1,0 +1,148 @@
+/* Operational content hierarchy. Scope details instead of hiding capabilities. */
+.page-heading h1 {
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+.page-heading p {
+  font-size: 14px;
+  max-width: 700px;
+  line-height: 1.5;
+}
+.page-heading {
+  margin-bottom: 18px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.4px;
+}
+.panel summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.review-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #d8e1db;
+  padding-bottom: 12px;
+}
+.review-tabs button {
+  padding: 11px 18px;
+  border: 1px solid #cad9d4;
+  border-radius: 7px;
+  background: #fff;
+}
+.review-tabs button[aria-pressed="true"] {
+  background: #1d655e;
+  color: #fff;
+  border-color: #1d655e;
+}
+.scenario-guide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.scenario-guide > div > span {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #e2eee7;
+  color: #276258;
+  font-weight: bold;
+}
+.scenario-guide p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.competition-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+.competition-grid button {
+  display: grid;
+  gap: 8px;
+  text-align: left;
+  padding: 14px;
+  border: 1px solid #dbe4df;
+  background: #f7faf8;
+  border-radius: 8px;
+  white-space: normal;
+}
+.competition-grid b {
+  font-size: 14px;
+}
+.competition-grid span,
+.competition-grid small {
+  font-size: 12px;
+  color: #516b71;
+  line-height: 1.5;
+}
+button:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+a:focus-visible {
+  outline: 3px solid #c4903c;
+  outline-offset: 3px;
+}
+.case-context {
+  padding: 15px 18px;
+}
+.case-context strong {
+  font-size: 16px;
+}
+.case-context small {
+  font-size: 12px;
+}
+.content {
+  min-width: 0;
+}
+.resource-competition {
+  margin-bottom: 18px;
+}
+.case-workspace [hidden] {
+  display: none !important;
+}
+@media (max-width: 850px) {
+  .scenario-guide,
+  .competition-grid {
+    grid-template-columns: 1fr;
+  }
+  .top-controls {
+    flex-wrap: wrap;
+  }
+  .topbar {
+    height: auto;
+    min-height: 72px;
+  }
+  .main-shell {
+    min-width: 0;
+  }
+  .workspace {
+    min-width: 0;
+  }
+}
+.operations-switch {
+  margin-bottom: 12px;
+}
+.clockbar {
+  min-height: 55px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.content {
+  padding-top: 20px;
+}
+.case-workspace .case-facts {
+  margin: 0;
+}
+.case-workspace .case-heading {
+  margin: 0;
+}
+.action-receipt{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:13px 18px;margin-bottom:16px;border:1px solid #b7d2c5;background:#eaf4ec;border-radius:8px}.action-receipt>div{display:grid;gap:5px}.action-receipt b{font-size:14px}.action-receipt span{font-size:12px}.action-receipt.failed{background:#fff1e7;border-color:#d38d56}.action-receipt button{background:none;font-size:20px;border:0;padding:5px}

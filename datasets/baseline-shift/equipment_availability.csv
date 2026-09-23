@@ -1,0 +1,10 @@
+equipment_id,start_minute,end_minute,source
+YC-1,0,240,shift-roster
+YC-2,0,240,shift-roster
+YC-3,0,240,shift-roster
+QC-1,0,240,shift-roster
+QC-2,0,240,shift-roster
+TT-1,0,240,shift-roster
+TT-2,0,240,shift-roster
+TT-3,0,240,shift-roster
+GATE-1,0,240,shift-roster

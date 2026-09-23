@@ -1,0 +1,978 @@
+{
+  "version": "staged-routes-v1",
+  "units": "metres/minutes",
+  "nodes": [
+    {
+      "id": "A1",
+      "x": 160.0,
+      "y": 265.0
+    },
+    {
+      "id": "A2",
+      "x": 200.0,
+      "y": 265.0
+    },
+    {
+      "id": "A3",
+      "x": 240.0,
+      "y": 265.0
+    },
+    {
+      "id": "A4",
+      "x": 280.0,
+      "y": 265.0
+    },
+    {
+      "id": "B1",
+      "x": 385.0,
+      "y": 265.0
+    },
+    {
+      "id": "B2",
+      "x": 425.0,
+      "y": 265.0
+    },
+    {
+      "id": "B3",
+      "x": 465.0,
+      "y": 265.0
+    },
+    {
+      "id": "B4",
+      "x": 505.0,
+      "y": 265.0
+    },
+    {
+      "id": "C1",
+      "x": 610.0,
+      "y": 265.0
+    },
+    {
+      "id": "C2",
+      "x": 650.0,
+      "y": 265.0
+    },
+    {
+      "id": "C3",
+      "x": 690.0,
+      "y": 265.0
+    },
+    {
+      "id": "C4",
+      "x": 730.0,
+      "y": 265.0
+    },
+    {
+      "id": "D1",
+      "x": 160.0,
+      "y": 435.0
+    },
+    {
+      "id": "D2",
+      "x": 200.0,
+      "y": 435.0
+    },
+    {
+      "id": "D3",
+      "x": 240.0,
+      "y": 435.0
+    },
+    {
+      "id": "D4",
+      "x": 280.0,
+      "y": 435.0
+    },
+    {
+      "id": "E1",
+      "x": 385.0,
+      "y": 435.0
+    },
+    {
+      "id": "E2",
+      "x": 425.0,
+      "y": 435.0
+    },
+    {
+      "id": "E3",
+      "x": 465.0,
+      "y": 435.0
+    },
+    {
+      "id": "E4",
+      "x": 505.0,
+      "y": 435.0
+    },
+    {
+      "id": "F1",
+      "x": 610.0,
+      "y": 435.0
+    },
+    {
+      "id": "F2",
+      "x": 650.0,
+      "y": 435.0
+    },
+    {
+      "id": "F3",
+      "x": 690.0,
+      "y": 435.0
+    },
+    {
+      "id": "F4",
+      "x": 730.0,
+      "y": 435.0
+    },
+    {
+      "id": "VESSEL-1",
+      "x": 220.0,
+      "y": 95.0
+    },
+    {
+      "id": "VESSEL-2",
+      "x": 740.0,
+      "y": 95.0
+    },
+    {
+      "id": "GATE-IN",
+      "x": 100.0,
+      "y": 590.0
+    },
+    {
+      "id": "TRUCK-OUT",
+      "x": 350.0,
+      "y": 590.0
+    },
+    {
+      "id": "RAIL-1",
+      "x": 780.0,
+      "y": 565.0
+    },
+    {
+      "id": "RAIL-2",
+      "x": 780.0,
+      "y": 625.0
+    },
+    {
+      "id": "J0",
+      "x": 180,
+      "y": 405
+    },
+    {
+      "id": "J1",
+      "x": 420,
+      "y": 405
+    },
+    {
+      "id": "J2",
+      "x": 660,
+      "y": 405
+    },
+    {
+      "id": "J3",
+      "x": 900,
+      "y": 405
+    }
+  ],
+  "edges": [
+    {
+      "id": "J0>J1",
+      "source": "J0",
+      "target": "J1",
+      "metres": 240,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>J0",
+      "source": "J1",
+      "target": "J0",
+      "metres": 240,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>J2",
+      "source": "J1",
+      "target": "J2",
+      "metres": 240,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>J1",
+      "source": "J2",
+      "target": "J1",
+      "metres": 240,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>J3",
+      "source": "J2",
+      "target": "J3",
+      "metres": 240,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J3>J2",
+      "source": "J3",
+      "target": "J2",
+      "metres": 240,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "A1>J0",
+      "source": "A1",
+      "target": "J0",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>A1",
+      "source": "J0",
+      "target": "A1",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "A2>J0",
+      "source": "A2",
+      "target": "J0",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>A2",
+      "source": "J0",
+      "target": "A2",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "A3>J0",
+      "source": "A3",
+      "target": "J0",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>A3",
+      "source": "J0",
+      "target": "A3",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "A4>J0",
+      "source": "A4",
+      "target": "J0",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>A4",
+      "source": "J0",
+      "target": "A4",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "B1>J1",
+      "source": "B1",
+      "target": "J1",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>B1",
+      "source": "J1",
+      "target": "B1",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "B2>J1",
+      "source": "B2",
+      "target": "J1",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>B2",
+      "source": "J1",
+      "target": "B2",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "B3>J1",
+      "source": "B3",
+      "target": "J1",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>B3",
+      "source": "J1",
+      "target": "B3",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "B4>J1",
+      "source": "B4",
+      "target": "J1",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>B4",
+      "source": "J1",
+      "target": "B4",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "C1>J2",
+      "source": "C1",
+      "target": "J2",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>C1",
+      "source": "J2",
+      "target": "C1",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "C2>J2",
+      "source": "C2",
+      "target": "J2",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>C2",
+      "source": "J2",
+      "target": "C2",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "C3>J2",
+      "source": "C3",
+      "target": "J2",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>C3",
+      "source": "J2",
+      "target": "C3",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "C4>J2",
+      "source": "C4",
+      "target": "J2",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>C4",
+      "source": "J2",
+      "target": "C4",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "D1>J0",
+      "source": "D1",
+      "target": "J0",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>D1",
+      "source": "J0",
+      "target": "D1",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "D2>J0",
+      "source": "D2",
+      "target": "J0",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>D2",
+      "source": "J0",
+      "target": "D2",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "D3>J0",
+      "source": "D3",
+      "target": "J0",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>D3",
+      "source": "J0",
+      "target": "D3",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "D4>J0",
+      "source": "D4",
+      "target": "J0",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>D4",
+      "source": "J0",
+      "target": "D4",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "E1>J1",
+      "source": "E1",
+      "target": "J1",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>E1",
+      "source": "J1",
+      "target": "E1",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "E2>J1",
+      "source": "E2",
+      "target": "J1",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>E2",
+      "source": "J1",
+      "target": "E2",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "E3>J1",
+      "source": "E3",
+      "target": "J1",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>E3",
+      "source": "J1",
+      "target": "E3",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "E4>J1",
+      "source": "E4",
+      "target": "J1",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>E4",
+      "source": "J1",
+      "target": "E4",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "F1>J2",
+      "source": "F1",
+      "target": "J2",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>F1",
+      "source": "J2",
+      "target": "F1",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "F2>J2",
+      "source": "F2",
+      "target": "J2",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>F2",
+      "source": "J2",
+      "target": "F2",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "F3>J2",
+      "source": "F3",
+      "target": "J2",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>F3",
+      "source": "J2",
+      "target": "F3",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "F4>J2",
+      "source": "F4",
+      "target": "J2",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>F4",
+      "source": "J2",
+      "target": "F4",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "VESSEL-1>J0",
+      "source": "VESSEL-1",
+      "target": "J0",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>VESSEL-1",
+      "source": "J0",
+      "target": "VESSEL-1",
+      "metres": 80,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "VESSEL-2>J2",
+      "source": "VESSEL-2",
+      "target": "J2",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>VESSEL-2",
+      "source": "J2",
+      "target": "VESSEL-2",
+      "metres": 110,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "GATE-IN>J0",
+      "source": "GATE-IN",
+      "target": "J0",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J0>GATE-IN",
+      "source": "J0",
+      "target": "GATE-IN",
+      "metres": 140,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "TRUCK-OUT>J1",
+      "source": "TRUCK-OUT",
+      "target": "J1",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J1>TRUCK-OUT",
+      "source": "J1",
+      "target": "TRUCK-OUT",
+      "metres": 170,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "RAIL-1>J2",
+      "source": "RAIL-1",
+      "target": "J2",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>RAIL-1",
+      "source": "J2",
+      "target": "RAIL-1",
+      "metres": 200,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "RAIL-2>J2",
+      "source": "RAIL-2",
+      "target": "J2",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    },
+    {
+      "id": "J2>RAIL-2",
+      "source": "J2",
+      "target": "RAIL-2",
+      "metres": 230,
+      "loaded_mpm": 120,
+      "empty_mpm": 180,
+      "compatible": [
+        "tractor"
+      ],
+      "closed": false
+    }
+  ],
+  "pickup_minutes": 2,
+  "setdown_minutes": 2,
+  "initial_positions": {
+    "TT-1": "J3",
+    "TT-2": "J0",
+    "TT-3": "J3"
+  },
+  "provenance": "Authored synthetic service road: 240m junction spacing; 80\u2013230m spurs; not inferred physical geography"
+}

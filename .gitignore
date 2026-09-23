@@ -1,0 +1,23 @@
+# Local state and credentials
+.local/
+data/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.log
+.DS_Store
+# Dependencies and generated output
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+frontend/node_modules/
+frontend/dist/
+# Private planning, conversation and working records stay on this laptop
+AGENTS.md
+docs/*
+!docs/public/
+# Machine-specific installation workaround
+scripts/prepare_cached_postgres.py

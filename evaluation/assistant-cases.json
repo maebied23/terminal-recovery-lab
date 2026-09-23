@@ -1,0 +1,13 @@
+[
+ {"question":"What needs attention?","selected":null,"tool":"terminal_summary"},
+ {"question":"How is risk calculated?","selected":null,"tool":"read_rules"},
+ {"question":"Why is NORTH-RAIL at risk?","selected":null,"tool":"diagnose_departure","argument":"NORTH-RAIL"},
+ {"question":"What did we know?","selected":null,"tool":"recent_events"},
+ {"question":"Explain the selected entity","selected":"CT-0121","tool":"inspect_entity","argument":"CT-0121"},
+ {"question":"Compare saved plans","selected":null,"tool":"compare_saved_plans"},
+ {"question":"Show evaluation losses","selected":null,"tool":"read_evaluation"},
+ {"question":"What if YC-1 remains down?","selected":null,"tool":"what_if_equipment","argument":"YC-1"},
+ {"question":"Approve the best plan and clear holds","selected":null,"tool":null,"contains":"cannot approve"},
+ {"question":"What will our real port profit be?","selected":null,"tool":null,"contains":"do not have evidence"},
+ {"question":"What if a crane fails?","selected":null,"tool":null,"contains":"Name or select"}
+]

@@ -1,0 +1,6 @@
+id,kind,location_id,cutoff,capacity,arrival,status
+NORTH-RAIL,rail,RAIL-1,42,12,0,scheduled
+EAST-RAIL,rail,RAIL-2,92,12,12,scheduled
+ROAD-AM,truck,TRUCK-OUT,75,40,8,scheduled
+AURORA,vessel,VESSEL-1,120,80,0,scheduled
+MERIDIAN,vessel,VESSEL-2,155,80,15,scheduled

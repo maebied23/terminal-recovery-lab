@@ -1,0 +1,2 @@
+{"receive_minute": 10, "event": {"source": "fleet", "event_id": "failure-1", "external_id": "crane-west-1", "kind": "equipment.status", "observed_at": "2026-09-20T08:10:00+00:00", "sequence": 1, "value": "failed"}}
+{"receive_minute": 25, "event": {"source": "fleet", "event_id": "repair-1", "external_id": "crane-west-1", "kind": "equipment.status", "observed_at": "2026-09-20T08:25:00+00:00", "sequence": 2, "value": "available"}}

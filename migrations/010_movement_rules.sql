@@ -1,0 +1,4 @@
+INSERT INTO source_assertions(id,title,source,review_status,executable,body) VALUES
+ ('R-MOVEMENT','Versioned movement and handovers','Synthetic movement contract staged-routes-v1','reviewed',true,'For movement-shift only: explicit directed metric roads; empty and loaded tractor travel; pickup and set-down profiles; stage equipment release; one current cargo custodian; one receiving transfer position. R-DURATION describes legacy runs, not this movement model. Speeds and handling rates are synthetic, not calibrated.'),
+ ('R-PLACEMENT-TIME','Conditional yard capacity','Synthetic movement contract staged-routes-v1','reviewed',true,'A scheduled pickup supports a conditional occupancy profile but frees actual space only at execution. Unknown or held departures cannot create vacancy. Placement must not cover cargo with an earlier known retrieval obligation. All candidate rows pass physical replay.')
+ON CONFLICT DO NOTHING;

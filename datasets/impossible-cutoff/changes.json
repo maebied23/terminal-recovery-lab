@@ -1,0 +1,9 @@
+[
+  {
+    "table": "commitments",
+    "key": "NORTH-RAIL",
+    "set": {
+      "cutoff": 1
+    }
+  }
+]

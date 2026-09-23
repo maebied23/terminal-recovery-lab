@@ -1,0 +1,5 @@
+source,external_id,kind,entity_id
+fleet,crane-west-1,equipment,YC-1
+inventory,box-121,container,CT-0121
+inventory,box-122,container,CT-0122
+authority,visit-125,container,CT-0125

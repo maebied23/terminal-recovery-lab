@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "pack_id": "movement-shift",
+  "title": "Connected movement shift",
+  "description": "Metric routes, empty tractor travel, temporal placement and executable handovers.",
+  "base": "baseline-shift",
+  "generator": "movement-inputs-v1",
+  "seed": 42,
+  "shift_start": "2026-09-20T08:00:00Z",
+  "timezone": "UTC",
+  "units": {
+    "time": "minute",
+    "weight": "tonne"
+  },
+  "resource_model": "coordinated-v2",
+  "base_files": {
+    "locations.csv": "cb77a5b103ecfc34bd56fbe16293328114ec8bbf4b2a0942cc23e5cfd4a008a4",
+    "equipment.csv": "0045882c979752b48c34c9125499abc97fa2da5e8a3f57d09c992e4b773cf5d1",
+    "containers.csv": "07466064b7ba78d489e553a797e51f2845d579adbb363f235db38706e8606a09",
+    "visits.csv": "86734b737aefeafd44a3ce919a7ec06f347d5d4a05d4c758d7c71ccc1d2fb538",
+    "inventory.csv": "385fd6478a9efd9957472cb278957152ade2f5aa75e500792d1c6e8e62dce9a0",
+    "commitments.csv": "48c29745827fe72dd4830264dfcc4b79c9a6f0f2fa0281cdf79f78114437ae77",
+    "work_orders.csv": "8012d8d4f38189220be687a657f228d3ee6fa7d90d1cc05b70dfce9c348d225a",
+    "dependencies.csv": "bbdba287b270c719c40ac2a7f466bc0908a8ca0c461c91fd575fe9b6a2532db6",
+    "equipment_availability.csv": "11ecd2c6cc55bfdd81b089639fc5f28bc1110d9e309e087082fc068b3dd465b2",
+    "identities.csv": "41ef3f128c62134e88cdb502e8d85bbc4b78be0bc6019f16ee700d87b506f521"
+  },
+  "files": {
+    "changes.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "events.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "movement.json": "cf767d09933758173ca696c37fca20a06e8843e1bbe2e720fbf8f8b739c0d4ee"
+  },
+  "assumptions": [
+    "Synthetic data and authored metric lengths, not terminal telemetry.",
+    "One vertical stack per yard location; one receiving transfer point per destination.",
+    "Handling and travel rates are uncalibrated; minute-resolution simulation."
+  ],
+  "authority": {
+    "equipment.status": "fleet",
+    "container.position": "inventory",
+    "container.release": "authority"
+  },
+  "movement_version": "staged-routes-v1"
+}

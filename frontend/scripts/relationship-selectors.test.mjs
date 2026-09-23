@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {relatedJobs,contextIds,journey} from '../src/relationships.ts';
+const s=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));
+assert(relatedJobs(s,'AURORA').some(j=>j.id==='MV-014'));
+assert(relatedJobs(s,'AURORA').some(j=>j.kind==='load'));
+assert.deepEqual(relatedJobs(s,'VIS-0133').map(j=>j.id),['MV-014','MV-015']);
+assert(contextIds(s,'MV-001').has('CT-0122'));
+assert.deepEqual(journey(s,'CT-0122').map(j=>j.id),['MV-013','MV-002']);
+assert(relatedJobs(s,'D1').some(j=>j.id==='MV-015'));
+console.log('6 relationship navigation assertions passed');

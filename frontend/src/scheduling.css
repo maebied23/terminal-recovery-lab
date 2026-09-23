@@ -1,0 +1,292 @@
+.schedule-workspace {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.schedule-workspace h2 {
+  font-size: 25px;
+  margin: 8px 0;
+}
+.schedule-workspace p {
+  line-height: 1.6;
+}
+.schedule-candidates {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.schedule-choice {
+  text-align: left;
+  background: #fff;
+  border: 1px solid #d7e0da;
+  border-radius: 12px;
+  padding: 20px;
+  display: block;
+  color: #263d39;
+  cursor: pointer;
+  white-space: normal;
+}
+.schedule-choice.chosen {
+  outline: 2px solid #177d75;
+  background: #f1f8f4;
+}
+.schedule-choice h3 {
+  margin: 9px 0 16px;
+  font-size: 17px;
+}
+.schedule-choice strong {
+  font-size: 21px;
+  display: block;
+}
+.schedule-choice small,
+.schedule-choice span {
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+.schedule-choice p {
+  font-size: 13px;
+}
+.schedule-table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.schedule-detail table {
+  min-width: 680px;
+}
+.schedule-detail td {
+  white-space: normal;
+  line-height: 1.55;
+}
+.schedule-detail td small {
+  display: block;
+  color: #667a74;
+  font-size: 11px;
+}
+.focus-departure {
+  background: #edf7f1;
+}
+.schedule-stage {
+  display: block;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.schedule-workspace summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 12px 0;
+}
+.schedule-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.schedule-timeline {
+  padding: 14px 14px 14px 0;
+  overflow-x: auto;
+}
+.booking-lane,
+.booking-axis {
+  display: grid;
+  grid-template-columns: 155px minmax(320px, 1fr);
+  gap: 12px;
+  min-width: 500px;
+  font-size: 12px;
+  align-items: center;
+}
+.booking-axis {
+  height: 32px;
+  color: #63776e;
+}
+.booking-axis > div {
+  position: relative;
+  height: 18px;
+  margin-right: 8px;
+}
+.booking-axis > div > span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+.booking-lane {
+  height: 39px;
+  border-bottom: 1px solid #e0e9e1;
+}
+.booking-lane > div {
+  height: 25px;
+  position: relative;
+  background: repeating-linear-gradient(
+    90deg,
+    #f2f5f1 0%,
+    #f2f5f1 24.8%,
+    #dce5dd 25%
+  );
+}
+.booking-lane button {
+  position: absolute;
+  height: 25px;
+  background: #177d75;
+  border: 1px solid white;
+  border-radius: 3px;
+  color: white;
+  padding: 0;
+  min-width: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 10px;
+}
+.booking-lane button.frozen {
+  background: #976c22;
+}
+.booking-lane button:hover,
+.booking-lane button:focus {
+  outline: 2px solid #263d39;
+  z-index: 2;
+}
+.approved-schedule {
+  border-left: 4px solid #177d75;
+}
+@media (max-width: 1000px) {
+  .schedule-candidates {
+    grid-template-columns: 1fr;
+  }
+  .schedule-intro .section-heading {
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+/* Grouped resource lanes, clipped clock window and one linked selection. */
+.booking-group {
+  font-weight: 650;
+  font-size: 12px;
+  color: #3e5c61;
+  padding: 14px 0 6px;
+  border-bottom: 1px solid #cad8d6;
+}
+.booking-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  color: #536d72;
+  font-size: 12px;
+  margin: 10px 0;
+}
+.booking-lane {
+  height: 44px;
+}
+.booking-lane .booking-track {
+  background: repeating-linear-gradient(
+    135deg,
+    #dbe2df,
+    #dbe2df 3px,
+    #eef1ef 3px,
+    #eef1ef 6px
+  );
+  height: 29px;
+}
+.booking-available {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: #edf5ef;
+}
+.booking-lane button {
+  height: 29px;
+  font-size: 11px;
+  background: #277d79;
+}
+.booking-lane button.selected-bundle {
+  outline: 3px solid #e3b754;
+  outline-offset: 1px;
+  z-index: 3;
+  background: #175c58;
+}
+.booking-marker {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  border-left: 2px dashed #936027;
+  z-index: 2;
+  pointer-events: none;
+}
+.booking-marker.now {
+  border-left: 2px solid #a83747;
+}
+.booking-selection {
+  display: grid;
+  gap: 8px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: #e9f2ed;
+  font-size: 13px;
+}
+.comparison-summary {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.comparison-summary > div {
+  flex: 1;
+  padding: 15px;
+  background: #f1f5f2;
+  display: grid;
+  gap: 8px;
+  min-width: 120px;
+}
+.comparison-summary span {
+  font-size: 12px;
+  color: #5f7378;
+}
+.comparison-summary b {
+  font-size: 16px;
+}
+.equipment-failed {
+  display: block;
+  color: #ab3441;
+  font-size: 11px;
+}
+.schedule-detail th {
+  position: sticky;
+  top: 0;
+  background: #f0f5f2;
+  z-index: 1;
+}
+.schedule-detail td:first-child {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.schedule-detail table {
+  font-size: 13px;
+}
+.schedule-detail td {
+  padding: 12px;
+}
+.schedule-workspace h2 {
+  font-size: 23px;
+}
+.schedule-workspace .schedule-choice small,
+.schedule-workspace .schedule-choice span {
+  font-size: 12px;
+}
+.schedule-choice {
+  padding: 17px;
+}
+.schedule-choice p {
+  line-height: 1.5;
+}
+.schedule-choice strong {
+  font-size: 20px;
+}
+.booking-lane button.released-booking {
+  background: #dce4e1;
+  color: #405859;
+  border: 1px dashed #91a7a0;
+}
+.booking-lane button.released-booking.selected-bundle {
+  background: #c8d9d2;
+  color: #203c34;
+}
+.booking-lane button.frozen.selected-bundle {
+  background: #976c22;
+}

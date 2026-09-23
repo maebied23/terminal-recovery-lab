@@ -1,0 +1,31 @@
+[
+  {
+    "table": "inventory",
+    "key": "CT-0122",
+    "set": {
+      "location_id": "A2",
+      "tier": 5
+    }
+  },
+  {
+    "table": "visits",
+    "key": "VIS-0125",
+    "set": {
+      "released": "true",
+      "hold_reason": ""
+    }
+  },
+  {
+    "table": "work_orders",
+    "key": "MV-002",
+    "set": {
+      "source_id": "A2",
+      "equipment_id": "YC-1"
+    }
+  },
+  {
+    "table": "work_orders",
+    "key": "MV-013",
+    "delete": true
+  }
+]
