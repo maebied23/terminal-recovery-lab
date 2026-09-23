@@ -14,7 +14,7 @@ jobs:
           POSTGRES_DB: terminal_test
         ports: ['5432:5432']
         options: >-
-          --health-cmd 'pg_isready -U terminal_test'
+          --health-cmd "pg_isready -U terminal_test -d terminal_test"
           --health-interval 5s --health-timeout 5s --health-retries 12
     env:
       DATABASE_URL: postgresql://terminal_test:ci-only-disposable@127.0.0.1:5432/terminal_test
