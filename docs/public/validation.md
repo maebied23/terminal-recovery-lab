@@ -7,6 +7,7 @@ This release separates implementation correctness, synthetic decision quality an
 - Baseline before delivery changes: 138 backend tests passed.
 - Final regression: 145 backend tests passed, with two upstream TestClient deprecation warnings.
 - Production frontend build passed.
+- Hosted Linux CI independently passed dependency installation, all backend tests and frontend build. Its browser check found a schedule-view grid overflow; the parent tracks were corrected and the identical smoke check passed locally at 800 pixels.
 - Connected browser route passed: placement, three strategies, booking, stage execution, failed receiver custody, route controls and 800-pixel layout; no page errors.
 - Offline assistant routing/citation suite: 11/11 passed; no paid provider call.
 - Source-only checkout: fresh Python dependency installation, `npm ci`, frontend build and PostgreSQL initialization passed.

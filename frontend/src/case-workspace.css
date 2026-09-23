@@ -566,3 +566,11 @@
     transition: none !important;
   }
 }
+/* A schedule table must not set the minimum width of the whole departure case. */
+.case-workspace {
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+.case-workspace > * {
+  min-width: 0;
+}

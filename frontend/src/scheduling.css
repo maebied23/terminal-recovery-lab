@@ -290,3 +290,11 @@
 .booking-lane button.frozen.selected-bundle {
   background: #976c22;
 }
+/* Allow the table's scroll container to shrink inside nested grid tracks. */
+.schedule-workspace {
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+.schedule-workspace > * {
+  min-width: 0;
+}
