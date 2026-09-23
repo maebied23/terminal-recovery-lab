@@ -1,9 +1,10 @@
 import {chromium,request} from 'playwright';
 import fs from 'node:fs/promises';
-const base='http://127.0.0.1:8790',out='../docs/operational-model';
+const base=process.env.TERMINAL_TEST_URL || 'http://127.0.0.1:8790',out=process.env.TERMINAL_AUDIT_DIR || '../docs/operational-model';
+await fs.mkdir(out,{recursive:true});
 const check=(v,m)=>{if(!v)throw Error(m)};
 const api=await request.newContext({baseURL:base,timeout:120000});
-const login=await api.post('/api/session',{data:{code:(await fs.readFile('../.local/admin-code','utf8')).trim()}});
+const login=await api.post('/api/session',{data:{code:(await fs.readFile(process.env.TERMINAL_ADMIN_CODE_FILE || '../.local/admin-code','utf8')).trim()}});
 const {csrf}=await login.json(),headers={'X-CSRF-Token':csrf};
 const post=async(path,data)=>{const r=await api.post(path,{headers,data});check(r.ok(),await r.text());return r.json()};
 const packs=await(await api.get('/api/datasets')).json(),pack=packs.find(p=>p.id==='movement-shift');
@@ -11,6 +12,7 @@ const {id:run}=await post('/api/datasets/import',{pack_id:pack.id,expected_diges
 const url=`${base}/?run=${run}&departure=NORTH-RAIL&cargo=CT-0121&page=Operations`;
 await fs.writeFile(out+'/walkthrough.json',JSON.stringify({run,url},null,2));
 const browser=await chromium.launch({headless:true});
+try {
 const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 await page.goto(url);await page.getByRole('heading',{name:'North Rail',exact:true}).waitFor();
@@ -63,4 +65,5 @@ await page.getByRole('heading',{name:'Route availability',exact:true}).waitFor()
 await page.screenshot({path:out+'/09-route-controls.png'});
 check(errors.length===0,errors.join(';'));
 await fs.writeFile(out+'/browser-audit.json',JSON.stringify({run,url,branch,branchUrl,receiver,cargo:cargo.id,checks:['case selection','metric routes','empty travel','SQL occupancy','three strategies','solver details','compact viewport','approval on branch','stage execution','failure preserves custody','route controls'],errors},null,2));
-console.log(JSON.stringify({run,url,branch,errors}));await browser.close();await api.dispose();
+console.log(JSON.stringify({run,url,branch,errors}));
+} finally { await browser.close();await api.dispose(); }

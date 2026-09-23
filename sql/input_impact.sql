@@ -6,7 +6,10 @@ WITH RECURSIVE affected(id) AS (
  WHERE run_id=%(run)s AND status<>'completed' AND (
   id=%(entity)s OR container_id=%(entity)s OR equipment_id=%(entity)s
   OR source_id=%(entity)s OR target_id=%(entity)s
-  OR attributes->'resources' ? %(entity)s)
+  OR attributes->'resources' ? %(entity)s
+  OR (status='running' AND attributes->'assigned_resources' ? %(entity)s)
+  OR EXISTS (SELECT 1 FROM stage_reservations r WHERE r.run_id=move_jobs.run_id
+    AND r.job_id=move_jobs.id AND r.equipment_id=%(entity)s AND r.active))
  UNION
  SELECT d.job_id FROM job_dependencies d JOIN affected a ON d.predecessor_id=a.id
  JOIN move_jobs j ON (j.run_id,j.id)=(d.run_id,d.job_id)

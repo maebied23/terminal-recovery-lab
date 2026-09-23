@@ -21,3 +21,9 @@ docs/*
 !docs/public/
 # Machine-specific installation workaround
 scripts/prepare_cached_postgres.py
+
+# Private database archives
+*.dump
+*.dump.json
+*.backup
+*.backup.json

@@ -1,0 +1,32 @@
+import { chromium, request } from 'playwright';
+import fs from 'node:fs/promises';
+const base=process.env.TERMINAL_TEST_URL || 'http://127.0.0.1:8790';
+const out='../.local/release-browser';
+await fs.mkdir(out,{recursive:true});
+const api=await request.newContext({baseURL:base,timeout:120000});
+const login=await api.post('/api/session',{data:{code:(await fs.readFile(process.env.TERMINAL_ADMIN_CODE_FILE || '../.local/admin-code','utf8')).trim()}});
+if(!login.ok())throw Error('Cannot initialize review session');
+const {csrf}=await login.json();
+const post=async(path,data)=>{const r=await api.post(path,{headers:{'X-CSRF-Token':csrf},data});if(!r.ok())throw Error(await r.text());return r.json()};
+const packs=await(await api.get('/api/datasets')).json();
+const pack=packs.find(p=>p.id==='movement-shift');
+const {id:run}=await post('/api/datasets/import',{pack_id:pack.id,expected_digest:pack.digest,request_id:crypto.randomUUID()});
+const browser=await chromium.launch({headless:true});
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(`${base}/?run=${run}&departure=NORTH-RAIL&cargo=CT-0121&page=Operations`);
+ await page.getByRole('heading',{name:'North Rail',exact:true}).waitFor();
+ await page.locator('.case-map').screenshot({path:out+'/map.png'});
+ await page.getByRole('button',{name:'3 Compare & book',exact:true}).click();
+ await page.getByRole('button',{name:'Build recovery schedules',exact:true}).click();
+ await page.locator('.schedule-candidates').waitFor({timeout:120000});
+ if(await page.locator('.schedule-choice').count()!==3)throw Error('Missing strategy outcome');
+ await page.locator('.schedule-candidates').screenshot({path:out+'/comparison.png'});
+ await page.setViewportSize({width:800,height:900});
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1))throw Error('Horizontal overflow');
+ await page.screenshot({path:out+'/compact.png'});
+ if(errors.length)throw Error(errors.join('\n'));
+ await fs.writeFile(out+'/result.json',JSON.stringify({status:'passed',run,errors},null,2));
+ console.log('Connected movement browser smoke passed');
+}finally{await browser.close();await api.dispose()}

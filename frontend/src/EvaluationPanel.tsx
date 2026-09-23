@@ -19,6 +19,7 @@ type Report = Evaluation & {
     seeds: number[];
     expected_trials: number;
     limitations: string[];
+    sampling_note?: string;
   };
   summary: Array<{
     strategy: string;
@@ -57,7 +58,7 @@ type Report = Evaluation & {
     strategy: string;
     validation: string;
     execution_status: string;
-    metrics: { on_time: number; prediction_error: number } | null;
+    metrics: { on_time: number; prediction_error: number; empty_travel_minutes?: number | null; loaded_travel_minutes?: number | null } | null;
     interrupt_reason?: string;
   }>;
 };
@@ -83,7 +84,7 @@ export function EvaluationPanel({
   const [items, setItems] = useState<Evaluation[]>([]),
     [id, setId] = useState(""),
     [report, setReport] = useState<Report | null>(null),
-    [suite, setSuite] = useState("holdout"),
+    [suite, setSuite] = useState("movement"),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [caseId, setCaseId] = useState(""),
@@ -184,8 +185,9 @@ export function EvaluationPanel({
             value={suite}
             onChange={(e) => setSuite(e.target.value)}
           >
+            <option value="movement">Connected movement · 8 cases / 24 trials</option>
             <option value="holdout">
-              New stress families · 6 cases / 54 trials
+              Legacy stress regression · 6 cases / 54 trials
             </option>
             <option value="development">
               Reference cases · 3 cases / 27 trials
@@ -289,6 +291,7 @@ export function EvaluationPanel({
               </button>
             )}
           </div>
+          {report.manifest.sampling_note && <p className="muted">{report.manifest.sampling_note}</p>}
           <div className="evaluation-cards">
             {report.summary.map((r) => (
               <article key={r.strategy}>
@@ -380,6 +383,7 @@ export function EvaluationPanel({
                   <th>Seed</th>
                   <th>Strategy</th>
                   <th>Actual on time</th>
+                  <th>Travel minutes · empty / loaded</th>
                   <th>Execution / interruption reason</th>
                 </tr>
               </thead>
@@ -391,6 +395,7 @@ export function EvaluationPanel({
                       <td>{t.seed}</td>
                       <td>{label(t.strategy)}</td>
                       <td>{t.metrics?.on_time ?? "Not executable"}</td>
+                      <td>{t.metrics?.empty_travel_minutes != null && t.metrics?.loaded_travel_minutes != null ? `${t.metrics.empty_travel_minutes} / ${t.metrics.loaded_travel_minutes}` : "—"}</td>
                       <td>
                         {t.execution_status}
                         {t.interrupt_reason && ` · ${t.interrupt_reason}`}

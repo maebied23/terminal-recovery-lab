@@ -9,7 +9,7 @@ from app.datasets import load_pack
 from app.evaluation_store import enqueue, work, report
 
 p = argparse.ArgumentParser()
-p.add_argument("--suite", choices=["development", "holdout"], default="holdout")
+p.add_argument("--suite", choices=["development", "holdout", "movement"], default="holdout")
 p.add_argument("--run")
 args = p.parse_args()
 store = Store()
@@ -33,6 +33,7 @@ while True:
         flush=True,
     )
 path = ROOT / "docs/evaluation" / f"{args.suite}-report.json"
+path.parent.mkdir(parents=True, exist_ok=True)
 path.write_text(json.dumps(r, default=str, indent=2) + "\n")
 print(r["status"], r["summary"], flush=True)
 if r["status"] != "completed":

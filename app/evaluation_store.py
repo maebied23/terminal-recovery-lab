@@ -12,14 +12,23 @@ LOG = logging.getLogger("terminal.evaluation")
 
 
 def enqueue(store, run, revision, suite, source_request=None):
-    if suite not in ("development", "holdout", "case"):
+    if suite not in ("development", "holdout", "case", "movement"):
         raise RuleError("Unknown evaluation suite")
     m = manifest()
+    if suite == "movement":
+        m["seeds"] = [101]
+        m["sampling_note"] = (
+            "One execution per family/strategy: stage durations are deterministic; repeated seeds would not be independent evidence."
+        )
+
     m["runtime"] = dict(python=platform.python_version(), machine=platform.machine())
     import ortools
 
     m["runtime"]["ortools"] = ortools.__version__
     with store.connect() as c:
+        m["schema_version"] = c.execute(
+            "SELECT max(version) AS version FROM schema_version"
+        ).fetchone()["version"]
         s = store.read(run, c, lock=True)
         if s["revision"] != revision or s["running"]:
             raise RuleError("Pause at the current revision before evaluation")
@@ -126,6 +135,13 @@ def work(store):
 
     try:
         m = task["manifest"]
+        if (
+            m.get("provenance_version") == 2
+            and m["planner_digest"] != manifest()["planner_digest"]
+        ):
+            raise RuleError(
+                "Implementation changed after enqueue; create a new evaluation with current provenance"
+            )
         result = evaluate_case(
             task["snapshot"],
             task["scenario"],

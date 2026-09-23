@@ -9,7 +9,9 @@ from app.store import Store, ROOT
 from app.assistant import assistant
 
 store = Store()
-run = sys.argv[1] if len(sys.argv) > 1 else "eval-daa648df"
+if len(sys.argv) != 2:
+    raise SystemExit("Usage: python scripts/evaluate_assistant.py RUN_ID")
+run = sys.argv[1]
 rows = []
 for case in json.loads((ROOT / "evaluation/assistant-cases.json").read_text()):
     result = assistant(store, run, case["question"], case["selected"])
@@ -43,6 +45,7 @@ report = dict(
     passed=sum(r["passed"] for r in rows),
     results=rows,
 )
+(ROOT / "docs/assistant").mkdir(parents=True, exist_ok=True)
 (ROOT / "docs/assistant/offline-report.json").write_text(
     json.dumps(report, indent=2) + "\n"
 )

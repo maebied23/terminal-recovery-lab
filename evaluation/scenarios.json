@@ -1,20 +1,240 @@
 {
   "version": "departure-eval-v1",
-  "seeds": [101, 307, 911],
+  "seeds": [
+    101,
+    307,
+    911
+  ],
   "horizon": 180,
   "solver_seconds": 2,
   "execution_policy": "fixed approved schedule; interrupt future dispatch; finish in-progress work when possible; no automatic replanning",
   "development": [
-    {"id":"reference-baseline","title":"Known baseline","pack":"baseline-shift","known":{},"duration_factor":1.0,"events":[]},
-    {"id":"reference-normal","title":"Known accessible and released cargo","pack":"normal-shift","known":{},"duration_factor":1.0,"events":[]},
-    {"id":"reference-no-win","title":"Known impossible rail cutoff","pack":"impossible-cutoff","known":{},"duration_factor":1.0,"events":[]}
+    {
+      "id": "reference-baseline",
+      "title": "Known baseline",
+      "pack": "baseline-shift",
+      "known": {},
+      "duration_factor": 1.0,
+      "events": []
+    },
+    {
+      "id": "reference-normal",
+      "title": "Known accessible and released cargo",
+      "pack": "normal-shift",
+      "known": {},
+      "duration_factor": 1.0,
+      "events": []
+    },
+    {
+      "id": "reference-no-win",
+      "title": "Known impossible rail cutoff",
+      "pack": "impossible-cutoff",
+      "known": {},
+      "duration_factor": 1.0,
+      "events": []
+    }
   ],
   "holdout": [
-    {"id":"compressed-windows","title":"Compressed departure windows","pack":"normal-shift","known":{"cutoff_factor":0.62},"duration_factor":1.0,"events":[]},
-    {"id":"split-equipment-calendar","title":"Crane and tractor shift gaps","pack":"baseline-shift","known":{"split_calendars":["YC-1","TT-2"]},"duration_factor":1.0,"events":[]},
-    {"id":"slow-handling","title":"Handling takes longer than the planning budget","pack":"normal-shift","known":{},"duration_factor":1.65,"events":[]},
-    {"id":"unannounced-crane-outage","title":"A shared crane fails after approval","pack":"baseline-shift","known":{},"duration_factor":1.0,"events":[{"kind":"equipment.status","entity_id":"YC-3","value":"failed","observed_minute":9,"delivery_minute":9},{"kind":"equipment.status","entity_id":"YC-3","value":"available","observed_minute":29,"delivery_minute":29}]},
-    {"id":"late-release-conflicting-position","title":"Conflicting pickup and late release notice","pack":"baseline-shift","known":{"position_mismatch":true},"duration_factor":1.0,"events":[{"kind":"container.release","entity_id":"CT-0125","value":true,"observed_minute":3,"delivery_minute":28}]},
-    {"id":"combined-transport-disruption","title":"Slower handling and a tractor outage","pack":"normal-shift","known":{},"duration_factor":1.3,"events":[{"kind":"equipment.status","entity_id":"TT-2","value":"failed","observed_minute":12,"delivery_minute":12},{"kind":"equipment.status","entity_id":"TT-2","value":"available","observed_minute":50,"delivery_minute":50}]}
-  ]
+    {
+      "id": "compressed-windows",
+      "title": "Compressed departure windows",
+      "pack": "normal-shift",
+      "known": {
+        "cutoff_factor": 0.62
+      },
+      "duration_factor": 1.0,
+      "events": []
+    },
+    {
+      "id": "split-equipment-calendar",
+      "title": "Crane and tractor shift gaps",
+      "pack": "baseline-shift",
+      "known": {
+        "split_calendars": [
+          "YC-1",
+          "TT-2"
+        ]
+      },
+      "duration_factor": 1.0,
+      "events": []
+    },
+    {
+      "id": "slow-handling",
+      "title": "Handling takes longer than the planning budget",
+      "pack": "normal-shift",
+      "known": {},
+      "duration_factor": 1.65,
+      "events": []
+    },
+    {
+      "id": "unannounced-crane-outage",
+      "title": "A shared crane fails after approval",
+      "pack": "baseline-shift",
+      "known": {},
+      "duration_factor": 1.0,
+      "events": [
+        {
+          "kind": "equipment.status",
+          "entity_id": "YC-3",
+          "value": "failed",
+          "observed_minute": 9,
+          "delivery_minute": 9
+        },
+        {
+          "kind": "equipment.status",
+          "entity_id": "YC-3",
+          "value": "available",
+          "observed_minute": 29,
+          "delivery_minute": 29
+        }
+      ]
+    },
+    {
+      "id": "late-release-conflicting-position",
+      "title": "Conflicting pickup and late release notice",
+      "pack": "baseline-shift",
+      "known": {
+        "position_mismatch": true
+      },
+      "duration_factor": 1.0,
+      "events": [
+        {
+          "kind": "container.release",
+          "entity_id": "CT-0125",
+          "value": true,
+          "observed_minute": 3,
+          "delivery_minute": 28
+        }
+      ]
+    },
+    {
+      "id": "combined-transport-disruption",
+      "title": "Slower handling and a tractor outage",
+      "pack": "normal-shift",
+      "known": {},
+      "duration_factor": 1.3,
+      "events": [
+        {
+          "kind": "equipment.status",
+          "entity_id": "TT-2",
+          "value": "failed",
+          "observed_minute": 12,
+          "delivery_minute": 12
+        },
+        {
+          "kind": "equipment.status",
+          "entity_id": "TT-2",
+          "value": "available",
+          "observed_minute": 50,
+          "delivery_minute": 50
+        }
+      ]
+    }
+  ],
+  "movement": [
+    {
+      "id": "movement-reference",
+      "title": "Connected movement reference",
+      "pack": "movement-shift",
+      "known": {},
+      "duration_factor": 1,
+      "events": []
+    },
+    {
+      "id": "retrieval-obstruction",
+      "title": "Relocation targets cargo with an existing retrieval obligation",
+      "pack": "movement-shift",
+      "known": {
+        "relocation_target": "A3"
+      },
+      "duration_factor": 1,
+      "events": []
+    },
+    {
+      "id": "full-destination",
+      "title": "Prescribed destination has no initial free capacity",
+      "pack": "movement-shift",
+      "known": {
+        "full_location": "D4"
+      },
+      "duration_factor": 1,
+      "events": []
+    },
+    {
+      "id": "handling-calendar",
+      "title": "Handling and tractor calendar gaps",
+      "pack": "movement-shift",
+      "known": {
+        "split_calendars": [
+          "YC-1",
+          "TT-2"
+        ]
+      },
+      "duration_factor": 1,
+      "events": []
+    },
+    {
+      "id": "empty-reposition",
+      "title": "Tractors begin at distant service nodes",
+      "pack": "movement-shift",
+      "known": {
+        "tractor_origin": {
+          "TT-1": "VESSEL-2",
+          "TT-2": "TRUCK-OUT"
+        }
+      },
+      "duration_factor": 1,
+      "events": []
+    },
+    {
+      "id": "route-disruption",
+      "title": "Access route closes after approval",
+      "pack": "movement-shift",
+      "known": {},
+      "duration_factor": 1,
+      "events": [
+        {
+          "kind": "route.closed",
+          "entity_id": "A1>J0",
+          "value": true,
+          "observed_minute": 3,
+          "delivery_minute": 3
+        }
+      ]
+    },
+    {
+      "id": "receiver-disruption",
+      "title": "Receiver fails while work is in flight",
+      "pack": "movement-shift",
+      "known": {},
+      "duration_factor": 1,
+      "events": [
+        {
+          "kind": "equipment.status",
+          "entity_id": "YC-1",
+          "value": "failed",
+          "observed_minute": 8,
+          "delivery_minute": 8
+        },
+        {
+          "kind": "equipment.status",
+          "entity_id": "YC-1",
+          "value": "available",
+          "observed_minute": 24,
+          "delivery_minute": 24
+        }
+      ]
+    },
+    {
+      "id": "impossible-movement",
+      "title": "North Rail has an infeasible cutoff",
+      "pack": "movement-shift",
+      "known": {
+        "rail_cutoff": 1
+      },
+      "duration_factor": 1,
+      "events": []
+    }
+  ],
+  "movement_scope": "Internal synthetic validation; deterministic stage durations make the three execution seeds repetitions, not independent physical variability. Inspect failures as well as successes."
 }

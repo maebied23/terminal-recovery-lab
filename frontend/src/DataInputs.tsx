@@ -102,6 +102,17 @@ export function DataInputs({
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [entity, setEntity] = useState("YC-1");
+  const [feed, setFeed] = useState<{ run: string; received: number; applied: number; duplicates: number; stale: number; quarantined: number; last_received_at: string | null } | null>(null);
+  useEffect(() => {
+    let active = true;
+    setFeed(null);
+    if (historical) return;
+    const refresh = () => request(`/api/integrations/equipment/status?run=${encodeURIComponent(run)}`)
+      .then(r => { if (active) setFeed({ ...r, run }); }).catch(() => { if (active) setFeed(null); });
+    refresh();
+    const timer = setInterval(refresh, 10000);
+    return () => { active = false; clearInterval(timer); };
+  }, [request, run, s.revision, historical]);
   const target = selected || entity;
   const currentEquipment = s.equipment.find((e) => e.id === target);
   const currentCargo = s.containers.find((c) => c.id === target);
@@ -218,6 +229,12 @@ export function DataInputs({
         Load a known starting world, then follow observations into cargo,
         equipment and departure decisions.
       </p>
+      {!historical && feed?.run === run && <details className="panel" aria-label="Equipment observation feed">
+        <summary>Equipment feed · {feed.received ? `${feed.applied} applied · ${feed.quarantined} quarantined` : "No external receipts"}</summary>
+        <p>Synthetic sender · {feed.last_received_at ? `Last received ${new Date(feed.last_received_at).toLocaleString()}` : "Not yet connected"}</p>
+        <p>{feed.duplicates} duplicate · {feed.stale} stale. Sender silence does not change equipment availability.</p>
+        <p>Select equipment below to inspect accepted inputs and affected work.</p>
+      </details>}
       {error && (
         <p role="alert" className="data-error">
           {error}

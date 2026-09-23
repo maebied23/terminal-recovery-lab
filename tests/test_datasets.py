@@ -112,6 +112,10 @@ def db():
     with store.connect() as c:
         for run in runs:
             for table in (
+                "stage_reservations",
+                "cargo_custody",
+                "transport_edges",
+                "transport_nodes",
                 "plans",
                 "experiments",
                 "commands",

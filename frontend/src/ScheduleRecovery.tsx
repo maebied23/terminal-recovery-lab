@@ -461,7 +461,7 @@ export function ScheduleRecovery({
                     </p>
                     <p className="micro">
                       {c.metrics.lateness} cargo-minutes beyond cutoff within
-                      the horizon · {c.metrics.travel} transfer minutes
+                      the horizon · {c.metrics.travel} modeled travel minutes
                     </p>
                     <span>Independent physical replay passed</span>
                   </>

@@ -7,6 +7,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ConfigDict, model_validator
 from .store import Store, ROOT
+from . import runtime
 from .domain import RuleError, enrich, seed_state
 from .planning import enqueue_experiment, work_experiment
 from .tools import inspect_entity
@@ -20,8 +21,8 @@ LOG = logging.getLogger("terminal.api")
 store = Store()
 stop = threading.Event()
 sessions = {}
-LOCAL = ROOT / ".local"
-LOCAL.mkdir(exist_ok=True)
+LOCAL = Path(os.getenv("TERMINAL_STATE_DIR", str(ROOT / ".local")))
+LOCAL.mkdir(parents=True, exist_ok=True)
 code_path = LOCAL / "admin-code"
 if not code_path.exists():
     code_path.write_text(secrets.token_urlsafe(12))
@@ -33,13 +34,16 @@ def worker(exit_event):
     last = time.monotonic()
     while not exit_event.is_set():
         try:
+            runtime.mark("commands", "working")
             processed = store.process_one()
             if time.monotonic() - last >= 1:
                 store.auto_tick()
                 last = time.monotonic()
+            runtime.mark("commands")
             if not processed:
                 exit_event.wait(0.15)
         except Exception:
+            runtime.mark("commands", "failed")
             LOG.exception("worker_cycle_failed")
             exit_event.wait(2)
 
@@ -47,6 +51,7 @@ def worker(exit_event):
 def planner(exit_event):
     while not exit_event.is_set():
         try:
+            runtime.mark("planner", "working")
             from .schedule_store import work as work_schedule
 
             from .evaluation_store import work as work_evaluation
@@ -56,8 +61,10 @@ def planner(exit_event):
                 and not work_evaluation(store)
                 and not work_experiment(store)
             ):
+                runtime.mark("planner")
                 exit_event.wait(0.5)
         except Exception:
+            runtime.mark("planner", "failed")
             LOG.exception("planner_cycle_failed")
             exit_event.wait(2)
 
@@ -90,15 +97,41 @@ app = FastAPI(title="Terminal Recovery Lab", version="1.0.0", lifespan=lifespan)
 @app.middleware("http")
 async def protect(request: Request, call_next):
     host = request.headers.get("host", "")
-    if host.split(":")[0] not in ("127.0.0.1", "localhost", "testserver"):
+    allowed = os.getenv(
+        "TERMINAL_ALLOWED_HOSTS", "127.0.0.1,localhost,testserver"
+    ).split(",")
+    if host.split(":")[0] not in allowed:
         return Response("Local host only", status_code=403)
+    proxy_key = os.getenv("TERMINAL_PROXY_KEY")
+    if (
+        host.split(":")[0] not in ("127.0.0.1", "localhost", "testserver")
+        and not proxy_key
+    ):
+        return Response(
+            "Nonlocal access requires an authenticated proxy", status_code=403
+        )
+    if proxy_key and not secrets.compare_digest(
+        request.headers.get("x-terminal-proxy", ""), proxy_key
+    ):
+        return Response("Authenticated proxy required", status_code=403)
     if request.method not in ("GET", "HEAD", "OPTIONS"):
+        # Bound the actual body, including chunked requests, before parsing.
+        body = bytearray()
+        async for chunk in request.stream():
+            body.extend(chunk)
+            if len(body) > 65536:
+                return Response("Request body exceeds 64 KiB", status_code=413)
+        request._body = bytes(body)
         origin = request.headers.get("origin")
         if origin and origin not in (f"http://{host}", f"https://{host}"):
             return Response("Cross-origin mutation rejected", status_code=403)
-        if request.url.path != "/api/session":
+        if request.url.path not in ("/api/session", "/api/integrations/equipment"):
             session = sessions.get(request.cookies.get("terminal_session", ""))
-            if not session or request.headers.get("x-csrf-token") != session["csrf"]:
+            if (
+                not session
+                or session.get("expires", 0) < time.time()
+                or request.headers.get("x-csrf-token") != session["csrf"]
+            ):
                 return Response(
                     "Valid local session and CSRF token required", status_code=403
                 )
@@ -132,9 +165,20 @@ def session(body: Login, response: Response):
     role = "scenario-admin" if body.code else "operator"
     token = secrets.token_urlsafe(32)
     csrf = secrets.token_urlsafe(24)
-    sessions[token] = dict(role=role, csrf=csrf)
+    for expired in [
+        k for k, v in sessions.items() if v.get("expires", 0) < time.time()
+    ]:
+        sessions.pop(expired, None)
+    if len(sessions) >= 1000:
+        raise HTTPException(429, "Session limit reached")
+    sessions[token] = dict(role=role, csrf=csrf, expires=time.time() + 86400)
     response.set_cookie(
-        "terminal_session", token, httponly=True, samesite="strict", max_age=86400
+        "terminal_session",
+        token,
+        httponly=True,
+        samesite="strict",
+        max_age=86400,
+        secure=os.getenv("TERMINAL_SECURE_COOKIE") == "1",
     )
     return dict(role=role, csrf=csrf)
 
@@ -348,7 +392,7 @@ def schedule_feedback(run: str = "main"):
 
 class EvaluationRequest(Strict):
     expected_revision: int = Field(ge=0)
-    suite: Literal["development", "holdout", "case"] = "holdout"
+    suite: Literal["development", "holdout", "case", "movement"] = "holdout"
     source_request: str | None = Field(default=None, max_length=80)
 
 
@@ -579,3 +623,63 @@ if DIST.exists():
     @app.get("/")
     def index():
         return FileResponse(DIST / "index.html")
+
+
+class EquipmentObservation(Strict):
+    schema_version: Literal[1]
+    source: str = Field(min_length=1, max_length=120)
+    event_id: str = Field(min_length=1, max_length=120)
+    external_id: str = Field(min_length=1, max_length=120)
+    kind: Literal["equipment.status"]
+    observed_at: str = Field(min_length=1, max_length=120)
+    sequence: int = Field(ge=0, strict=True)
+    value: Literal["available", "failed"]
+
+
+@app.post("/api/integrations/equipment", status_code=201)
+def equipment_observation(body: EquipmentObservation, request: Request, run: str):
+    token = os.getenv("TERMINAL_FEED_TOKEN", "")
+    if len(token) < 32:
+        raise HTTPException(503, "Equipment adapter is not configured")
+    if not secrets.compare_digest(
+        request.headers.get("authorization", ""), "Bearer " + token
+    ):
+        raise HTTPException(401, "Equipment sender authentication required")
+    if run != os.getenv("TERMINAL_FEED_RUN") or body.source != os.getenv(
+        "TERMINAL_FEED_SOURCE", "fleet"
+    ):
+        raise HTTPException(403, "Sender is not scoped to this run/source")
+    from .integration import receive
+
+    return receive(store, run, body.model_dump(exclude={"schema_version"}))
+
+
+@app.get("/api/integrations/equipment/status")
+def equipment_feed_status(run: str):
+    from .integration import status
+
+    return status(store, run)
+
+
+@app.get("/api/live")
+def live():
+    return {"status": "alive"}
+
+
+@app.get("/api/ready")
+def ready(response: Response):
+    try:
+        with store.connect() as c:
+            c.execute("SELECT 1")
+        workers = runtime.snapshot()
+        healthy = all(
+            name in workers
+            and workers[name]["phase"] != "failed"
+            and workers[name]["age_seconds"] < (600 if name == "planner" else 60)
+            for name in ("commands", "planner")
+        )
+        response.status_code = 200 if healthy else 503
+        return dict(status="ready" if healthy else "worker stale", workers=workers)
+    except Exception:
+        response.status_code = 503
+        return dict(status="database unavailable")

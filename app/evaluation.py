@@ -28,17 +28,24 @@ def digest(value):
 def manifest():
     raw = json.loads(SPEC.read_text())
     raw["digest"] = digest(raw)
-    raw["planner_digest"] = digest(
-        {
-            p: (SPEC.parents[1] / "app" / p).read_text()
-            for p in (
-                "scheduling.py",
-                "domain.py",
-                "schedule_execution.py",
-                "evaluation.py",
-            )
-        }
+    root = SPEC.parents[1]
+    paths = sorted(
+        [
+            *root.glob("app/*.py"),
+            *root.glob("sql/*.sql"),
+            *root.glob("migrations/*.sql"),
+            *root.glob("evaluation/*.json"),
+            *root.glob("datasets/**/*.json"),
+            *root.glob("datasets/**/*.csv"),
+            *root.glob("datasets/**/*.jsonl"),
+            root / "requirements.lock.txt",
+        ]
     )
+    raw["source_hashes"] = {
+        str(p.relative_to(root)): sha256(p.read_bytes()).hexdigest() for p in paths
+    }
+    raw["planner_digest"] = digest(raw["source_hashes"])
+    raw["provenance_version"] = 2
     raw["limitations"] = [
         "Synthetic stress families, not real-terminal validation or calibrated confidence.",
         "Holdout families were not used to tune step 4; once inspected they become regression evidence, not permanently unseen data.",
@@ -77,11 +84,47 @@ def scenario_state(spec):
             ]
     if known.get("position_mismatch"):
         by_id(s["containers"], "CT-0122").update(location_id="A2", tier=5)
+    if known.get("relocation_target"):
+        from .placement import rewrite
+
+        s, _ = rewrite(s, "MV-013", known["relocation_target"])
+    if known.get("full_location"):
+        loc = by_id(s["locations"], known["full_location"])
+        loc["capacity"] = sum(c["location_id"] == loc["id"] for c in s["containers"])
+    for edge in s.get("movement", {}).get("edges", []):
+        if edge["id"] in known.get("closed_edges", []):
+            edge["closed"] = True
+    if known.get("tractor_origin"):
+        for eid, node in known["tractor_origin"].items():
+            if node not in {n["id"] for n in s["movement"]["nodes"]}:
+                raise RuleError("Unknown fixture tractor origin")
+            by_id(s["equipment"], eid)["node_id"] = node
+    if known.get("rail_cutoff") is not None:
+        by_id(s["commitments"], "NORTH-RAIL")["cutoff"] = known["rail_cutoff"]
+        for j in s["jobs"]:
+            if (
+                by_id(s["containers"], j["container_id"])["commitment_id"]
+                == "NORTH-RAIL"
+            ):
+                j["deadline"] = known["rail_cutoff"]
     validate(s)
     return s
 
 
 def deliver(s, event):
+    if event["kind"] == "route.closed":
+        edge = by_id(s["movement"]["edges"], event["entity_id"])
+        if not edge:
+            raise RuleError("Unknown fixture route")
+        edge["closed"] = event["value"]
+        return dict(
+            kind="input.applied",
+            entity_id=edge["id"],
+            valid_minute=event["observed_minute"],
+            delivered_minute=s["minute"],
+            source="evaluation fixture",
+            message="Synthetic route notice delivered",
+        )
     target = by_id(
         s["equipment"] if event["kind"] == "equipment.status" else s["containers"],
         event["entity_id"],
@@ -145,7 +188,7 @@ def simulate_candidate(snapshot, candidate, scenario, seed, end):
         durations = dict(
             model=s["movement"]["digest"],
             execution_factor=s["duration_factor"],
-            seed=seed,
+            deterministic=True,
         )
         s["_execution_duration_factor"] = s["duration_factor"]
         s["duration_factor"] = snapshot.get("duration_factor", 1)
@@ -193,7 +236,19 @@ def simulate_candidate(snapshot, candidate, scenario, seed, end):
         if j["status"] == "completed" and j["id"] not in initial_completed
     ]
     services = observed["services"]
+    stage_travel = {"empty": 0, "transfer": 0}
+    for job in s["jobs"]:
+        for i, stage in enumerate(job.get("movement_stages", [])):
+            if stage["kind"] not in stage_travel:
+                continue
+            duration_minutes = stage["end"] - stage["start"]
+            if job["status"] == "completed" or i < job.get("stage_index", 0):
+                stage_travel[stage["kind"]] += duration_minutes
+            elif job["status"] == "running" and i == job.get("stage_index", 0):
+                stage_travel[stage["kind"]] += duration_minutes - job["stage_remaining"]
     observed["metrics"].update(
+        empty_travel_minutes=stage_travel["empty"] if s.get("movement") else None,
+        loaded_travel_minutes=stage_travel["transfer"] if s.get("movement") else None,
         on_time=sum(v["on_time"] for v in observed["visits"]),
         completed_services=sum(
             c["on_time"] == c["total"] and c["total"] > 0 for c in services

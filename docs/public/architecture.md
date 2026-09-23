@@ -6,6 +6,8 @@ The React interface reads FastAPI projections. PostgreSQL holds canonical operat
 
 `app/domain.py` defines transitions and operational guards. `app/store.py` persists revisions and commands. `app/datasets.py` validates versioned input packs; `app/feed.py` reconciles observations while retaining rejected and stale deliveries as evidence.
 
+`app/integration.py::receive` accepts narrowly scoped equipment observations through the same receipt ledger and reconciliation transaction. An accepted fact interrupts stale active schedules immediately; repeated transport delivery remains visible without duplicating the equipment effect.
+
 A physical container has a visit describing its current journey. A visit may link to a departure commitment. Work orders connect the container and visit to source/destination locations; directed prerequisite edges connect work across containers. Availability describes when equipment may work, reservations describe approved future use, and custody describes what currently holds cargo. These concepts are deliberately separate.
 
 ## Placement and scheduling
@@ -14,7 +16,7 @@ A physical container has a visit describing its current journey. A visit may lin
 
 `app/placement.py` and `app/placement_store.py` preserve alternatives and guard instruction changes by revision. Changing a destination does not move cargo or book equipment.
 
-`app/scheduling.py` compares policies. For the connected movement model, `app/stage_planning.py` constructs staged candidates and independently replays them. CP-SAT operates on a bounded option pool; a solver result can fail the physical replay and remain visible as a rejected alternative.
+`app/scheduling.py` compares policies. For the connected movement model, `app/stage_planning.py` constructs staged candidates and independently replays them. CP-SAT checks both stage intervals and the availability of the assigned bundle at initial dispatch. It operates on a bounded option pool; a solver result can fail the physical replay and remain visible as a rejected alternative.
 
 ## Movement and persistence
 
@@ -24,7 +26,7 @@ Destination capacity and handling availability are conservative constraints. Rec
 
 ## Evaluation and assistance
 
-`app/evaluation.py` executes fixed-plan paired trials; `app/evaluation_store.py` persists leased work and results. SQL reports compare outcomes and expose harmed departures, incomplete work and regressions. These synthetic tests are not independent terminal measurements.
+`app/evaluation.py` executes fixed-plan paired trials; `app/evaluation_store.py` persists leased work and results. SQL reports compare outcomes and expose harmed departures, incomplete work and regressions. Reports fingerprint application code, SQL, migrations, input/scenario files and dependency locks. A queued evaluation refuses execution if those sources change. The deterministic movement suite uses one execution per family/strategy. These synthetic tests are not independent terminal measurements.
 
 `app/assistant.py` exposes typed, read-only evidence tools. An optional model selects canonical evidence claims; application code renders the facts. It cannot issue approvals, execute arbitrary SQL or replace the scheduler.
 

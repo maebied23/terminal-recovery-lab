@@ -32,6 +32,7 @@ result = dict(
     scope="144 containers, 37 moves, 24 committed visits. Local query-plan evidence, not an enterprise benchmark.",
     plans=plans,
 )
+Path("docs/diagnosis").mkdir(parents=True, exist_ok=True)
 Path("docs/diagnosis/sql-query-plans.json").write_text(
     json.dumps(result, indent=2, default=str) + "\n"
 )

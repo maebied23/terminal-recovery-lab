@@ -131,6 +131,15 @@ def replay(snapshot, rows, horizon):
     return s
 
 
+def dispatch_conflict(r, t):
+    """Dispatch requires the assigned bundle free now, even before a later stage.
+
+    This guard mirrors domain.dispatch without reserving unused equipment for
+    the full move. Real stage intervals remain the capacity model.
+    """
+    return any(e in r["resources"] and a <= r["start"] < b for e, a, b in intervals(t))
+
+
 def constraint_schedule(s, horizon, seconds=4):
     from ortools.sat.python import cp_model
 
@@ -200,8 +209,15 @@ def constraint_schedule(s, horizon, seconds=4):
         m.add_circuit(arcs)
     for i, (p, r) in enumerate(choices):
         for q, t in choices[i + 1 :]:
-            if point_conflict(r, [t]):
+            if (
+                point_conflict(r, [t])
+                or dispatch_conflict(r, t)
+                or dispatch_conflict(t, r)
+            ):
                 m.add(p + q <= 1)
+    for p, r in choices:
+        if any(dispatch_conflict(r, t) for t in fixed):
+            m.add(p == 0)
     for v in equipment.values():
         m.add_no_overlap(v)
     for opts in jobs.values():
