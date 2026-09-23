@@ -1,28 +1,70 @@
--- Grain: candidate/location/time boundary. Never multiply cargo by equipment rows.
--- Planning-only profile: a pickup creates conditional capacity, never an observed vacancy.
-WITH rows AS (
- SELECT value AS r FROM jsonb_array_elements(%(rows)s::jsonb)
-), moves AS (
- SELECT r->>'job_id' job_id, r->>'source_id' source_id, r->>'target_id' target_id,
- (r->>'end')::int arrival,
- (SELECT min((p->>'start')::int) FROM jsonb_array_elements(r->'stages') p
-  WHERE p->>'kind'='pickup') pickup
- FROM rows
-), deltas AS (
- SELECT l.id location_id, %(minute)s::int at_minute, count(c.id)::bigint delta
- FROM locations l LEFT JOIN containers c ON c.run_id=l.run_id AND c.location_id=l.id
- WHERE l.run_id=%(run)s AND l.kind='yard' GROUP BY l.id
- UNION ALL SELECT source_id,pickup,-1 FROM moves WHERE pickup IS NOT NULL AND pickup>%(minute)s
- UNION ALL SELECT target_id,arrival,1 FROM moves
-), boundaries AS (
- SELECT location_id,at_minute,sum(delta) delta FROM deltas GROUP BY location_id,at_minute
-), profile AS (
- SELECT location_id,at_minute,
- lead(at_minute,1,%(horizon)s::int) OVER(PARTITION BY location_id ORDER BY at_minute) until_minute,
- sum(delta) OVER(PARTITION BY location_id ORDER BY at_minute ROWS UNBOUNDED PRECEDING) occupied
- FROM boundaries
+-- Grain: one candidate/location/time boundary; resource joins must not multiply cargo.
+-- Planning-only: a scheduled pickup creates conditional capacity, not observed vacancy.
+WITH planned_moves AS (
+    SELECT value AS move
+    FROM jsonb_array_elements(%(rows)s::jsonb)
+), move_times AS (
+    -- Extract pickup and arrival from the candidate's physical stage schedule.
+    SELECT
+        move ->> 'job_id' AS job_id,
+        move ->> 'source_id' AS source_id,
+        move ->> 'target_id' AS target_id,
+        (move ->> 'end')::int AS arrival_minute,
+        (
+            SELECT MIN((stage ->> 'start')::int)
+            FROM jsonb_array_elements(move -> 'stages') AS stage
+            WHERE stage ->> 'kind' = 'pickup'
+        ) AS pickup_minute
+    FROM planned_moves
+), inventory_changes AS (
+    -- Seed each yard with observed inventory, then apply candidate movement deltas.
+    -- UNION ALL preserves simultaneous changes; the next CTE combines them.
+    SELECT
+        yard.id AS location_id,
+        %(minute)s::int AS at_minute,
+        COUNT(cargo.id)::bigint AS delta
+    FROM locations AS yard
+    LEFT JOIN containers AS cargo
+        ON cargo.run_id = yard.run_id AND cargo.location_id = yard.id
+    WHERE yard.run_id = %(run)s AND yard.kind = 'yard'
+    GROUP BY yard.id
+
+    UNION ALL
+
+    SELECT source_id, pickup_minute, -1
+    FROM move_times
+    WHERE pickup_minute IS NOT NULL AND pickup_minute > %(minute)s
+
+    UNION ALL
+
+    SELECT target_id, arrival_minute, 1
+    FROM move_times
+), time_boundaries AS (
+    -- One row per location/minute avoids arbitrary ordering of simultaneous events.
+    SELECT location_id, at_minute, SUM(delta) AS delta
+    FROM inventory_changes
+    GROUP BY location_id, at_minute
+), occupancy_profile AS (
+    -- Running inventory holds until the next boundary, or the planning horizon.
+    SELECT
+        location_id,
+        at_minute,
+        LEAD(at_minute, 1, %(horizon)s::int) OVER (
+            PARTITION BY location_id ORDER BY at_minute
+        ) AS until_minute,
+        SUM(delta) OVER (
+            PARTITION BY location_id
+            ORDER BY at_minute
+            ROWS UNBOUNDED PRECEDING
+        ) AS occupied
+    FROM time_boundaries
 )
-SELECT p.*,l.capacity,l.capacity-p.occupied free_slots
-FROM profile p JOIN locations l ON l.run_id=%(run)s AND l.id=p.location_id
-WHERE l.kind='yard' AND p.at_minute<%(horizon)s
-ORDER BY p.location_id,p.at_minute;
+SELECT
+    profile.*,
+    yard.capacity,
+    yard.capacity - profile.occupied AS free_slots
+FROM occupancy_profile AS profile
+JOIN locations AS yard
+    ON yard.run_id = %(run)s AND yard.id = profile.location_id
+WHERE yard.kind = 'yard' AND profile.at_minute < %(horizon)s
+ORDER BY profile.location_id, profile.at_minute;

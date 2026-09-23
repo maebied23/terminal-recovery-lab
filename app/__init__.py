@@ -1,1 +1,1 @@
-"""Terminal Recovery Lab v1. The earlier terminal/ package is preserved."""
+"""PostgreSQL-backed terminal decision workbench."""
